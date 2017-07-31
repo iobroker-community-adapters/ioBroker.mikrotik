@@ -1,0 +1,131 @@
+{
+    "common": {
+        "name": "mikrotik",
+        "version": "0.0.4",
+        "news": {
+            "0.0.4": {
+                "en": "added commands usb power reset\nfix error",
+                "de": "added commands usb power reset\nfix error",
+                "ru": "added commands usb power reset\nfix error",
+                "pt": "added commands usb power reset\nfix error",
+                "fr": "added commands usb power reset\nfix error",
+                "nl": "added commands usb power reset\nfix error"
+            },
+            "0.0.2": {
+                "en": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client",
+                "de": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client",
+                "ru": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client",
+                "pt": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client",
+                "fr": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client",
+                "nl": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client"
+            },
+            "0.0.1": {
+                "en": "initial adapter",
+                "de": "Initiale Version",
+                "ru": "Первоначальный адаптер",
+                "pt": "Versão inicial",
+                "fr": "Version initiale",
+                "nl": "Eerste release"
+            }
+        },
+        "title": "MikroTik Router adapter",
+        "desc": {
+            "en": "ioBroker mikrotik Adapter",
+            "de": "ioBroker Mikrotik Adapter",
+            "ru": "ioBroker Mikrotik драйвер",
+            "pt": "Modelo de adaptador para o ioBroker",
+            "fr": "ioBroker adaptateur modèle",
+            "nl": "ioBroker Mikrotik Adapter"
+        },
+        "platform": "Javascript/Node.js",
+        "mode": "daemon",
+        "icon": "mikrotik.png",
+        "enabled": false,
+        "extIcon": "https://raw.githubusercontent.com/instalator/iobroker.mikrotik/master/admin/mikrotik.png",
+        "keywords": ["mikrotik"],
+        "readme": "https://github.com/instalator/iobroker.mikrotik/blob/master/README.md",
+        "loglevel": "info",
+        "type": "hardware"
+    },
+    "native": {
+        "host": "192.168.88.1",
+        "port": 8728,
+        "login": "admin",
+        "password": ""
+    },
+    "objects": [
+
+    ],
+    "instanceObjects": [
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "If connected to MikroTik",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {
+            }
+        },
+        {
+            "_id": "commands.reboot",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Reboot router",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {
+            }
+        },
+        {
+            "_id": "commands.shutdown",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "Shut down router",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {
+            }
+        },
+        {
+            "_id": "commands.raw",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "raw commands router api",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {
+            }
+        },
+        {
+            "_id": "commands.usb_reset",
+            "type": "state",
+            "common": {
+                "role": "button",
+                "name": "USB power reset",
+                "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {
+            }
+        }
+    ]
+}
