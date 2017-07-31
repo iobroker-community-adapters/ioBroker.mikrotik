@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "mikrotik",
-        "version": "0.0.4",
+        "version": "0.0.5",
         "news": {
-            "0.0.4": {
+            "0.0.5": {
                 "en": "added commands usb power reset\nfix error",
                 "de": "added commands usb power reset\nfix error",
                 "ru": "added commands usb power reset\nfix error",
