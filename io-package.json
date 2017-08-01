@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "mikrotik",
-        "version": "0.0.5",
+        "version": "0.0.6",
         "news": {
-            "0.0.5": {
+            "0.0.4": {
                 "en": "added commands usb power reset\nfix error",
                 "de": "added commands usb power reset\nfix error",
                 "ru": "added commands usb power reset\nfix error",
@@ -41,7 +41,7 @@
         "mode": "daemon",
         "icon": "mikrotik.png",
         "enabled": false,
-        "extIcon": "https://raw.githubusercontent.com/instalator/iobroker.mikrotik/master/admin/mikrotik.png",
+        "extIcon": "https://raw.githubusercontent.com/instalator/iobroker.mikrotik/master/admin/mikrotik_200_200.png",
         "keywords": ["mikrotik"],
         "readme": "https://github.com/instalator/iobroker.mikrotik/blob/master/README.md",
         "loglevel": "info",

@@ -5,6 +5,7 @@ var adapter = utils.adapter('mikrotik');
 var MikroNode = require('mikronode-ng');
 
 var _poll, poll_time = 5000, connect = false, _connection, con, timer;
+var connection = null;
 var states = {
     "wireless" :    [],
     "dhcp" :        [],
@@ -17,18 +18,7 @@ var states = {
     },
     "systeminfo" :  {}
 };
-var old_states = {
-    "wireless" :    [],
-    "dhcp" :        [],
-    "interface" :   [],
-    "filter" :      [],
-    "nat" :         [],
-    "lists":        {
-        "dhcp_list" :   [],
-        "wifi_list" :   []
-    },
-    "systeminfo" :  {}
-};
+var old_states = states;
 var commands = {
     "reboot": "/system/reboot",
     "shutdown": "/system/shutdown",
@@ -36,6 +26,10 @@ var commands = {
 };
 
 adapter.on('unload', function (callback) {
+    if(connection){
+        connection.close();
+        connection = null;
+    }
     try {
         adapter.log.info('cleaned everything up...');
         callback();
@@ -76,6 +70,8 @@ adapter.on('stateChange', function (id, state) {
     }
 });
 
+
+
 function GetCmd(id, cmd, _id, val){
     var set;
     var ids = id.split(".");
@@ -93,17 +89,14 @@ function GetCmd(id, cmd, _id, val){
     if(ids[2] === 'nat'){
         set = '/ip/firewall/nat/set\n=disabled='+ val + '\n=.id=*' + _id;
     }
-
-
-
     SetCommand(set);
 }
 
 function SetCommand(set){
     adapter.log.debug('SetCommand ' + set);
-    _connection.getConnectPromise().then(function(conn) {
+    connection.getConnectPromise().then(function(conn) {
         conn.getCommandPromise(set).then(function resolved(values) {
-            
+            adapter.log.info('SetCommand response: ' + JSON.stringify(values));
         }, function rejected(reason) {
             err(reason);
         });
@@ -113,10 +106,7 @@ function SetCommand(set){
 adapter.on('message', function (obj) {
     if (typeof obj == 'object' && obj.message) {
         if (obj.command == 'send') {
-            // e.g. send email or pushover or whatever
             console.log('send command');
-
-            // Send response in callback if required
             if (obj.callback) adapter.sendTo(obj.from, obj.command, 'Message received', obj.callback);
         }
     }
@@ -136,14 +126,12 @@ function main(){
     adapter.subscribeStates('*');
 
     if(con.host && con.port){
-        var connection = MikroNode.getConnection(con.host, con.login, con.password, {
+        connection = MikroNode.getConnection(con.host, con.login, con.password, {
             port:           con.port,
-            timeout:        15,
+            timeout:        10,
             closeOnTimeout: true,
             closeOnDone:    false
         });
-        _connection = connection;
-
         connection.getConnectPromise().then(function (conn){
             adapter.log.info('MikroTik ' + conn.status + ' to: ' + conn.host);
             adapter.setState('info.connection', true, true);
@@ -177,7 +165,9 @@ function poll(conn){
             states.wireless = ParseWiFi(values[5]);
             SetStates(states);
         }, function rejected(reason) {
-            err(reason);
+            if(connection){
+                err(reason);
+            }
         });
     }, poll_time);
 }
@@ -381,18 +371,22 @@ function getNameWiFi(mac, cb){
 }
 
 function err(e){
-    e = e.toString();
-    if (connect){
-        adapter.log.error('Oops: ' + e);
-    }
-    if (~e.indexOf('ECONNRESET') || ~e.indexOf('closed') || ~e.indexOf('ended')){
-        clearInterval(_poll);
-        clearTimeout(timer);
-        connect = false;
-        adapter.log.error('Error socket: Reconnect after 15 sec...');
-        adapter.setState('info.connection', false, true);
-        timer = setTimeout(function() {
-            main();
-        }, 15000);
+    if (e){
+        e = e.toString();
+        if (connect){
+            adapter.log.error('Oops: ' + e);
+        }
+        if (~e.indexOf('ECONNRESET') || ~e.indexOf('closed') || ~e.indexOf('ended')){
+            clearInterval(_poll);
+            clearTimeout(timer);
+            connect = false;
+            connection.close();
+            connection = null;
+            adapter.log.error('Error socket: Reconnect after 15 sec...');
+            adapter.setState('info.connection', false, true);
+            timer = setTimeout(function() {
+                main();
+            }, 15000);
+        }
     }
 }
