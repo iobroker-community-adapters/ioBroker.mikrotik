@@ -18,7 +18,18 @@ var states = {
     },
     "systeminfo" :  {}
 };
-var old_states = states;
+var old_states = {
+    "wireless" :    [],
+        "dhcp" :        [],
+        "interface" :   [],
+        "filter" :      [],
+        "nat" :         [],
+        "lists":        {
+        "dhcp_list" :   [],
+            "wifi_list" :   []
+    },
+    "systeminfo" :  {}
+};
 var commands = {
     "reboot": "/system/reboot",
     "shutdown": "/system/shutdown",
