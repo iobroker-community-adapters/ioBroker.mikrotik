@@ -1,8 +1,16 @@
 {
     "common": {
         "name": "mikrotik",
-        "version": "0.0.6",
+        "version": "0.0.10",
         "news": {
+            "0.0.10": {
+                "en": "fix error\nchange logo",
+                "de": "fix error\nchange logo",
+                "ru": "fix error\nchange logo",
+                "pt": "fix error\nchange logo",
+                "fr": "fix error\nchange logo",
+                "nl": "fix error\nchange logo"
+            },
             "0.0.4": {
                 "en": "added commands usb power reset\nfix error",
                 "de": "added commands usb power reset\nfix error",
