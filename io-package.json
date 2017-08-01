@@ -103,12 +103,11 @@
             "_id": "commands.raw",
             "type": "state",
             "common": {
-                "role": "button",
+                "role": "command",
                 "name": "raw commands router api",
-                "type": "boolean",
+                "type": "string",
                 "read": false,
-                "write": true,
-                "def": false
+                "write": true
             },
             "native": {
             }
