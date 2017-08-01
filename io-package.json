@@ -41,8 +41,8 @@
         "mode": "daemon",
         "icon": "mikrotik.png",
         "enabled": false,
-        "extIcon": "https://raw.githubusercontent.com/instalator/iobroker.mikrotik/master/admin/mikrotik_200_200.png",
-        "keywords": ["mikrotik"],
+        "extIcon": "https://raw.githubusercontent.com/instalator/iobroker.mikrotik/master/admin/mikrotik.png",
+        "keywords": ["ioBroker", "mikrotik"],
         "readme": "https://github.com/instalator/iobroker.mikrotik/blob/master/README.md",
         "loglevel": "info",
         "type": "hardware"

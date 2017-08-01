@@ -1,4 +1,4 @@
-![Logo](admin/mikrotik.png)
+![Logo](admin/mikrotik_admin.png)
 ioBroker MikroTik Router adapter
 =================
 [![NPM version](http://img.shields.io/npm/v/iobroker.mikrotik.svg)](https://www.npmjs.com/package/iobroker.mikrotik)
