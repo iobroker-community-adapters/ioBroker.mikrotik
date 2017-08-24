@@ -4,7 +4,7 @@ var utils =    require(__dirname + '/lib/utils');
 var adapter = utils.adapter('mikrotik');
 var MikroNode = require('mikronode-ng');
 
-var _poll, poll_time = 5000, connect = false, _connection, con, timer;
+var _poll, poll_time = 5000, connect = false, timer;
 var connection = null;
 var states = {
     "wireless" :    [],
@@ -19,7 +19,7 @@ var states = {
     "systeminfo" :  {}
 };
 var old_states = {
-    "wireless" :    [],
+        "wireless" :    [],
         "dhcp" :        [],
         "interface" :   [],
         "filter" :      [],
@@ -30,6 +30,7 @@ var old_states = {
     },
     "systeminfo" :  {}
 };
+
 var commands = {
     "reboot": "/system/reboot",
     "shutdown": "/system/shutdown",
@@ -81,8 +82,6 @@ adapter.on('stateChange', function (id, state) {
     }
 });
 
-
-
 function GetCmd(id, cmd, _id, val){
     var set;
     var ids = id.split(".");
@@ -124,18 +123,17 @@ adapter.on('message', function (obj) {
 });
 
 adapter.on('ready', function () {
-    con = {
-        "host" : adapter.config.host ? adapter.config.host: "192.168.88.1",
-        "port" : adapter.config.port ? adapter.config.port: 8728,
-        "login" : adapter.config.login ? adapter.config.login : "admin",
-        "password" : adapter.config.password ? adapter.config.password : ""
-    };
     main();
 });
 
 function main(){
     adapter.subscribeStates('*');
-
+    var con = {
+        "host" : adapter.config.host ? adapter.config.host: "192.168.1.11",
+        "port" : adapter.config.port ? adapter.config.port: 8728,
+        "login" : adapter.config.login ? adapter.config.login : "admin",
+        "password" : adapter.config.password ? adapter.config.password : ""
+    };
     if(con.host && con.port){
         connection = MikroNode.getConnection(con.host, con.login, con.password, {
             port:           con.port,
@@ -153,28 +151,38 @@ function main(){
 }
 
 function poll(conn){
+    var ch1, ch2, ch3, ch4, ch5, ch6, ch7;
     clearInterval(_poll);
     _poll = setInterval(function() {
-        var ch1 = conn.getCommandPromise('/system/resource/print');
-        var ch2 = conn.getCommandPromise('/ip/firewall/nat/print');
-        var ch3 = conn.getCommandPromise('/ip/dhcp-server/lease/print');
-        var ch4 = conn.getCommandPromise('/interface/print');
-        var ch5 = conn.getCommandPromise('/ip/firewall/filter/print');
-        var ch6 = conn.getCommandPromise('/interface/wireless/registration-table/print');
-        Promise.all([ ch1, ch2, ch3, ch4, ch5, ch6 ]).then(function resolved(values) {
-            adapter.log.debug('/system/resource/print ' + JSON.stringify(values[0][0]) + '\n\n');
-            adapter.log.debug('interface/wireless/registration-table ' + JSON.stringify(values[1]) + '\n\n');
-            adapter.log.debug('ip/dhcp-server/lease ' + JSON.stringify(values[2]) + '\n\n');
-            adapter.log.debug('interface ' + JSON.stringify(values[3]) + '\n\n');
-            adapter.log.debug('ip/firewall/filter ' + JSON.stringify(values[4]) + '\n\n');
-            adapter.log.debug('ip/firewall/nat ' + JSON.stringify(values[5]) + '\n\n');
+        ch1 = conn.getCommandPromise('/system/resource/print');
+        ch2 = conn.getCommandPromise('/ip/firewall/nat/print');
+        ch3 = conn.getCommandPromise('/ip/dhcp-server/lease/print');
+        ch4 = conn.getCommandPromise('/interface/print');
+        ch5 = conn.getCommandPromise('/ip/firewall/filter/print');
+        ch6 = conn.getCommandPromise('/interface/wireless/registration-table/print');
+        ch7 = conn.getCommandPromise('/ip/address/print');
+        Promise.all([ ch1, ch2, ch3, ch4, ch5, ch6, ch7 ]).then(function resolved(values) {
+            adapter.log.debug('/system/resource/print' + JSON.stringify(values[0][0]) + '\n\n');
+            adapter.log.debug('interface/wireless/registration-table' + JSON.stringify(values[1]) + '\n\n');
+            adapter.log.debug('ip/dhcp-server/lease' + JSON.stringify(values[2]) + '\n\n');
+            adapter.log.debug('interface' + JSON.stringify(values[3]) + '\n\n');
+            adapter.log.debug('ip/firewall/filter' + JSON.stringify(values[4]) + '\n\n');
+            adapter.log.debug('ip/firewall/nat' + JSON.stringify(values[5]) + '\n\n');
+            adapter.log.debug('/ip/address/print' + JSON.stringify(values[6]) + '\n\n');
             states.systeminfo = values[0][0];
-            states.nat = ParseNat(values[1]);
-            states.dhcp = ParseDHCP(values[2]);
-            states.interface = ParseInterface(values[3]);
-            states.filter = ParseFilter(values[4]);
-            states.wireless = ParseWiFi(values[5]);
-            SetStates(states);
+            ParseNat(values[1], function(){
+                ParseDHCP(values[2], function (){
+                    ParseInterface(values[3], function (){
+                        ParseFilter(values[4], function (){
+                            ParseWiFi(values[5], function (){
+                                ParseWAN(values[6], function (){
+                                    SetStates();
+                                });
+                            });
+                        });
+                    });
+                });
+            });
         }, function rejected(reason) {
             if(connection){
                 err(reason);
@@ -183,7 +191,7 @@ function poll(conn){
     }, poll_time);
 }
 
-function ParseNat(d){
+function ParseNat(d, cb){
     var res = [];
     d.forEach(function(item, i){
         if(d[i][".id"] !== undefined){
@@ -198,10 +206,11 @@ function ParseNat(d){
                 });
         }
     });
-    return res;
+    states.nat = res;
+    cb();
 }
 
-function ParseFilter(d){
+function ParseFilter(d, cb){
     var res = [];
     d.forEach(function(item, i){
         if (d[i]["disabled"] !== undefined){
@@ -213,10 +222,11 @@ function ParseFilter(d){
             });
         }
     });
-    return res;
+    states.filter = res;
+    cb();
 }
 
-function ParseInterface(d){
+function ParseInterface(d, cb){
     var res = [];
     d.forEach(function(item, i){
         if (d[i]["name"] !== undefined){
@@ -230,11 +240,12 @@ function ParseInterface(d){
             });
         }
     });
-    return res;
+    states.interface = res;
+    cb();
 }
 
 
-function ParseWiFi(d){
+function ParseWiFi(d, cb){
     var res = [];
     states.lists.wifi_list = [];
     d.forEach(function(item, i) {
@@ -255,10 +266,11 @@ function ParseWiFi(d){
             "mac":   d[i]["mac-address"]
         });
     });
-    return res;
+    states.wireless = res;
+    cb();
 }
 
-function ParseDHCP(d){
+function ParseDHCP(d, cb){
     var res = [];
     states.lists.dhcp_list = [];
     d.forEach(function(item, i) {
@@ -283,49 +295,56 @@ function ParseDHCP(d){
                 });
         }
     });
-    return res;
+    states.dhcp = res;
+    cb();
 }
 
-function SetStates(states){
-    var a = [];
-    var obj = {};
+function ParseWAN(d, cb){
+    var res = [];
+    d.forEach(function(item, i){
+        if (d[i][".id"] !== undefined){
+            if(d[i]["interface"] === d[i]["actual-interface"]){
+                states.systeminfo.wan = d[i]["address"];
+            }
+        }
+    });
+    cb();
+}
+
+function SetStates(){
     Object.keys(states).forEach(function(key) {
-        //adapter.log.error('states[' + key +'] ' + states[key].length);
         if(states[key].length !== undefined && key !== 'lists'){
-            a = states[key];
-            a.forEach(function(item, i) {
-                obj = a[i];
-                Object.keys(obj).forEach(function(k) {
+            states[key].forEach(function(item, i) {
+                Object.keys(states[key][i]).forEach(function(k) {
                     if(old_states[key][i] == undefined){
                         old_states[key].push({});
                     }
-                    if (obj[k] !== old_states[key][i][k]){
-                        old_states[key][i][k] = obj[k];
+                    if (states[key][i][k] !== old_states[key][i][k]){
+                        old_states[key][i][k] = states[key][i][k];
                         var ids = '';
-                        if (obj['name'] !== undefined){
-                            if (obj['server'] !== undefined){
-                                ids = key + '.' + obj['server']  + '.' + obj['name'] + '.' + k;
+                        if (states[key][i]['name'] !== undefined){
+                            if (states[key][i]['server'] !== undefined){
+                                ids = key + '.' + states[key][i]['server']  + '.' + states[key][i]['name'] + '.' + k;
                             } else {
-                                ids = key + '.' + obj['name'] + '.' + k;
+                                ids = key + '.' + states[key][i]['name'] + '.' + k;
                             }
                         } else {
-                            ids = key + '.id' + obj['id'] + '.' + k;
+                            ids = key + '.id' + states[key][i]['id'] + '.' + k;
                         }
                         setObject(ids, states[key][i][k]);
                     }
                 });
             });
         } else {
-            obj = states[key];
             if (key === 'lists'){
-                Object.keys(obj).forEach(function(k) {
+                Object.keys(states[key]).forEach(function(k) {
                     var ids = key + '.' + k;
                     setObject(ids, JSON.stringify(states[key][k]));
                 });
             } else if (key === 'systeminfo'){
-                Object.keys(obj).forEach(function(k) {
-                    if (obj[k] !== old_states[key][k]){
-                        old_states[key][k] = obj[k];
+                Object.keys(states[key]).forEach(function(k) {
+                    if (states[key][k] !== old_states[key][k]){
+                        old_states[key][k] = states[key][k];
                         var ids = key + '.' + k;
                         setObject(ids, states[key][k]);
                     }
@@ -367,15 +386,14 @@ function setObject(name, val){
 }
 
 function getNameWiFi(mac, cb){
-    var a = states.dhcp;
     var res = mac;
     var n = 0;
-    a.forEach(function(item, i){
-        if (a[i]['mac-address'] === mac){
-            res = a[i]['name'];
+    states.dhcp.forEach(function(item, i){
+        if (states.dhcp[i]['mac-address'] === mac){
+            res = states.dhcp[i]['name'];
         }
         n++;
-        if(n === a.length) {
+        if(n === states.dhcp.length) {
             cb(res);
         }
     });
@@ -393,6 +411,7 @@ function err(e){
             connect = false;
             connection.close();
             connection = null;
+            _poll = null;
             adapter.log.error('Error socket: Reconnect after 15 sec...');
             adapter.setState('info.connection', false, true);
             timer = setTimeout(function() {

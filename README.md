@@ -9,6 +9,9 @@ ioBroker MikroTik Router adapter
 
 ## Changelog
 
+#### 0.0.11
+* (instalator) added WAN address to systeminfo
+
 #### 0.0.10
 * (instalator) change logo
 * (instalator) fix error
