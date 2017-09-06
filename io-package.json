@@ -4,12 +4,12 @@
         "version": "0.0.20",
         "news": {
             "0.0.20": {
-                "en": "change logic connect",
-                "de": "change logic connect",
-                "ru": "change logic connect",
-                "pt": "change logic connect",
-                "fr": "change logic connect",
-                "nl": "change logic connect"
+                "en": "add mask for password in settings dialog\nadded info error login or password",
+                "de": "add mask for password in settings dialog\nadded info error login or password",
+                "ru": "add mask for password in settings dialog\nadded info error login or password",
+                "pt": "add mask for password in settings dialog\nadded info error login or password",
+                "fr": "add mask for password in settings dialog\nadded info error login or password",
+                "nl": "add mask for password in settings dialog\nadded info error login or password"
             },
             "0.0.12": {
                 "en": "change logic connect",
