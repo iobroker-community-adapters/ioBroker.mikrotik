@@ -5,7 +5,7 @@ var adapter = utils.adapter('mikrotik');
 var MikroNode = require('mikronode-ng');
 
 var _poll, poll_time = 5000, connect = false, timer;
-var connection = null;
+var con, _con, connection;
 var states = {
     "wireless" :    [],
     "dhcp" :        [],
@@ -40,7 +40,6 @@ var commands = {
 adapter.on('unload', function (callback) {
     if(connection){
         connection.close();
-        connection = null;
     }
     try {
         adapter.log.info('cleaned everything up...');
@@ -104,11 +103,13 @@ function GetCmd(id, cmd, _id, val){
 
 function SetCommand(set){
     adapter.log.debug('SetCommand ' + set);
-    connection.getConnectPromise().then(function(conn) {
-        conn.getCommandPromise(set).then(function resolved(values) {
-            adapter.log.info('SetCommand response: ' + JSON.stringify(values));
-        }, function rejected(reason) {
-            err(reason);
+    _con.write(set, function(ch) {
+        ch.once('done', function(p, chan) {
+            var d = MikroNode.parseItems(p);
+            adapter.log.info('SetCommand response: ' + JSON.stringify(d));
+        });
+        ch.on('error', function(err, chan) {
+            err(err);
         });
     });
 }
@@ -128,54 +129,148 @@ adapter.on('ready', function () {
 
 function main(){
     adapter.subscribeStates('*');
-    var con = {
+
+    con = {
         "host" : adapter.config.host ? adapter.config.host: "192.168.1.11",
         "port" : adapter.config.port ? adapter.config.port: 8728,
         "login" : adapter.config.login ? adapter.config.login : "admin",
         "password" : adapter.config.password ? adapter.config.password : ""
     };
     if(con.host && con.port){
-        connection = MikroNode.getConnection(con.host, con.login, con.password, {
+        var _connection = MikroNode.getConnection(con.host, con.login, con.password, {
             port:           con.port,
             timeout:        10,
             closeOnTimeout: true,
             closeOnDone:    false
         });
-        connection.getConnectPromise().then(function (conn){
-            adapter.log.info('MikroTik ' + conn.status + ' to: ' + conn.host);
+        connection = _connection.connect(function(c) {
+            _con = c.openChannel();
+            _con.clearEvents = true;
+            adapter.log.info('MikroTik ' + c.status + ' to: ' + c.host);
             adapter.setState('info.connection', true, true);
             connect = true;
-            poll(conn);
+            parse();
+        });
+        connection.on('timeout', function (e){
+            err(e);
+        });
+        connection.on('error', function (e){
+            err(e);
         });
     }
 }
+var flag = false;
+function ch1(cb){
+    _con.write('/system/resource/print', function(ch) {
+        ch.once('done', function(p, chan) {
+            var d = MikroNode.parseItems(p);
+            states.systeminfo = d[0];
+            adapter.log.debug('/system/resource/print' + JSON.stringify(d));
+            if(cb){cb();}
+        });
+        if(!flag){
+            flag = true;
+            ch.on('error', function (e, chan){
+                //adapter.log.debug('Oops: ' + e);
+            });
+        }
+    });
+}
 
-function poll(conn){
-    var ch1, ch2, ch3, ch4, ch5, ch6, ch7;
-    clearInterval(_poll);
-    _poll = setInterval(function() {
-        ch1 = conn.getCommandPromise('/system/resource/print');
-        ch2 = conn.getCommandPromise('/ip/firewall/nat/print');
-        ch3 = conn.getCommandPromise('/ip/dhcp-server/lease/print');
-        ch4 = conn.getCommandPromise('/interface/print');
-        ch5 = conn.getCommandPromise('/ip/firewall/filter/print');
-        ch6 = conn.getCommandPromise('/interface/wireless/registration-table/print');
-        ch7 = conn.getCommandPromise('/ip/address/print');
-        Promise.all([ ch1, ch2, ch3, ch4, ch5, ch6, ch7 ]).then(function resolved(values) {
-            adapter.log.debug('/system/resource/print' + JSON.stringify(values[0][0]) + '\n\n');
-            adapter.log.debug('interface/wireless/registration-table' + JSON.stringify(values[1]) + '\n\n');
-            adapter.log.debug('ip/dhcp-server/lease' + JSON.stringify(values[2]) + '\n\n');
-            adapter.log.debug('interface' + JSON.stringify(values[3]) + '\n\n');
-            adapter.log.debug('ip/firewall/filter' + JSON.stringify(values[4]) + '\n\n');
-            adapter.log.debug('ip/firewall/nat' + JSON.stringify(values[5]) + '\n\n');
-            adapter.log.debug('/ip/address/print' + JSON.stringify(values[6]) + '\n\n');
-            states.systeminfo = values[0][0];
-            ParseNat(values[1], function(){
-                ParseDHCP(values[2], function (){
-                    ParseInterface(values[3], function (){
-                        ParseFilter(values[4], function (){
-                            ParseWiFi(values[5], function (){
-                                ParseWAN(values[6], function (){
+function ch2(cb){
+    _con.write('/ip/firewall/nat/print', function(ch) {
+        ch.once('done', function(p, chan) {
+            var d = MikroNode.parseItems(p);
+            ParseNat(d);
+            adapter.log.debug('/ip/firewall/nat/print' + JSON.stringify(d));
+            if(cb){cb();}
+        });
+        /*ch.once('error', function(e, chan) {
+            err(e, true);
+        });*/
+    });
+}
+
+function ch3(cb){
+    _con.write('/ip/dhcp-server/lease/print', function(ch) {
+        ch.once('done', function(p, chan) {
+            var d = MikroNode.parseItems(p);
+            ParseDHCP(d);
+            adapter.log.debug('/ip/dhcp-server/lease/print' + JSON.stringify(d));
+            if(cb){cb();}
+        });
+        /*ch.once('error', function(e, chan) {
+            err(e, true);
+        });*/
+    });
+}
+
+function ch4(cb){
+    _con.write('/interface/print', function(ch) {
+        ch.once('done', function(p, chan) {
+            var d = MikroNode.parseItems(p);
+            ParseInterface(d);
+            adapter.log.debug('/interface/print' + JSON.stringify(d));
+            if(cb){cb();}
+        });
+        /*ch.once('error', function(e, chan) {
+            err(e, true);
+        });*/
+    });
+}
+
+function ch5(cb){
+    _con.write('/ip/firewall/filter/print', function(ch) {
+        ch.once('done', function(p, chan) {
+            var d = MikroNode.parseItems(p);
+            ParseFilter(d);
+            adapter.log.debug('/ip/firewall/filter/print' + JSON.stringify(d));
+            if(cb){cb();}
+        });
+        /*ch.once('error', function(e, chan) {
+            err(e, true);
+        });*/
+    });
+}
+
+function ch6(cb){
+    _con.write('/interface/wireless/registration-table/print', function(ch) {
+        ch.once('done', function(p, chan) {
+            var d = MikroNode.parseItems(p);
+            ParseWiFi(d);
+            adapter.log.debug('/interface/wireless/registration-table/print' + JSON.stringify(d));
+            if(cb){cb();}
+        });
+        /*ch.once('error', function(e, chan) {
+            err(e, true);
+        });*/
+    });
+}
+
+function ch7(cb){
+    _con.write('/ip/address/print', function(ch) {
+        ch.once('done', function(p, chan) {
+            var d = MikroNode.parseItems(p);
+            ParseWAN(d);
+            adapter.log.debug('/ip/address/print' + JSON.stringify(d));
+            if(cb){cb();}
+        });
+        /*ch.once('error', function(e, chan) {
+            err(e, true);
+        });*/
+    });
+}
+
+function parse(){
+    clearTimeout(_poll);
+    _poll = setTimeout(function(){
+        ch1(function (){
+            ch2(function (){
+                ch3(function (){
+                    ch4(function (){
+                        ch5(function (){
+                            ch6(function (){
+                                ch7(function (){
                                     SetStates();
                                 });
                             });
@@ -183,10 +278,6 @@ function poll(conn){
                     });
                 });
             });
-        }, function rejected(reason) {
-            if(connection){
-                err(reason);
-            }
         });
     }, poll_time);
 }
@@ -207,7 +298,7 @@ function ParseNat(d, cb){
         }
     });
     states.nat = res;
-    cb();
+    //cb();
 }
 
 function ParseFilter(d, cb){
@@ -223,7 +314,7 @@ function ParseFilter(d, cb){
         }
     });
     states.filter = res;
-    cb();
+    //cb();
 }
 
 function ParseInterface(d, cb){
@@ -241,7 +332,7 @@ function ParseInterface(d, cb){
         }
     });
     states.interface = res;
-    cb();
+    //cb();
 }
 
 
@@ -267,7 +358,7 @@ function ParseWiFi(d, cb){
         });
     });
     states.wireless = res;
-    cb();
+    //cb();
 }
 
 function ParseDHCP(d, cb){
@@ -296,7 +387,7 @@ function ParseDHCP(d, cb){
         }
     });
     states.dhcp = res;
-    cb();
+    //cb();
 }
 
 function ParseWAN(d, cb){
@@ -308,7 +399,7 @@ function ParseWAN(d, cb){
             }
         }
     });
-    cb();
+    //cb();
 }
 
 function SetStates(){
@@ -350,10 +441,9 @@ function SetStates(){
                     }
                 });
             }
-
-
         }
     });
+    parse();
 }
 
 function setObject(name, val){
@@ -382,7 +472,7 @@ function setObject(name, val){
             adapter.setState(name, {val: val, ack: true});
         }
     });
-    adapter.subscribeStates('*');
+    //adapter.subscribeStates('*');
 }
 
 function getNameWiFi(mac, cb){
@@ -399,22 +489,23 @@ function getNameWiFi(mac, cb){
     });
 }
 
-function err(e){
+function err(e, er){
     if (e){
         e = e.toString();
         if (connect){
             adapter.log.error('Oops: ' + e);
         }
-        if (~e.indexOf('ECONNRESET') || ~e.indexOf('closed') || ~e.indexOf('ended')){
-            clearInterval(_poll);
+        if (~e.indexOf('ECONNRESET') || ~e.indexOf('closed') || ~e.indexOf('ended') || ~e.indexOf('Timeout') && !er){
+            connection.close();
+            flag = false;
+            clearTimeout(_poll);
             clearTimeout(timer);
             connect = false;
-            connection.close();
-            connection = null;
             _poll = null;
             adapter.log.error('Error socket: Reconnect after 15 sec...');
             adapter.setState('info.connection', false, true);
             timer = setTimeout(function() {
+                clearTimeout(timer);
                 main();
             }, 15000);
         }
