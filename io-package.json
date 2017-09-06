@@ -1,8 +1,16 @@
 {
     "common": {
         "name": "mikrotik",
-        "version": "0.0.12",
+        "version": "0.0.20",
         "news": {
+            "0.0.20": {
+                "en": "change logic connect",
+                "de": "change logic connect",
+                "ru": "change logic connect",
+                "pt": "change logic connect",
+                "fr": "change logic connect",
+                "nl": "change logic connect"
+            },
             "0.0.12": {
                 "en": "change logic connect",
                 "de": "change logic connect",

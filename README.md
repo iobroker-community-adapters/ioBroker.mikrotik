@@ -9,6 +9,9 @@ ioBroker MikroTik Router adapter
 
 ## Changelog
 
+#### 0.0.20
+* (instalator) change logic connect
+
 #### 0.0.12
 * (instalator) change logic connect
 
