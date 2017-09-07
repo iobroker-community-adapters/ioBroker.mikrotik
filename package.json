@@ -1,6 +1,6 @@
 {
   "name": "iobroker.mikrotik",
-  "version": "0.0.12",
+  "version": "0.0.20",
   "description": "ioBroker MikroTik Adapter",
   "author": {
     "name": "instalator",
@@ -32,7 +32,6 @@
       "grunt-jscs": "^2.0.0",
       "grunt-http": "^1.6.0",
       "mocha": "^2.3.4",
-      "v8-profiler": "*",
       "chai": "^3.4.1"
   },
   "main": "main.js",

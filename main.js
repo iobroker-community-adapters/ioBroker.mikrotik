@@ -151,6 +151,10 @@ function main(){
             connect = true;
             parse();
         });
+        connection.on('trap', function (e){
+            adapter.log.debug('TRAP ' + JSON.stringify(e));
+            err(e);
+        });
         connection.on('timeout', function (e){
             err(e);
         });
@@ -494,6 +498,9 @@ function err(e, er){
         e = e.toString();
         if (connect){
             adapter.log.error('Oops: ' + e);
+        }
+        if (~e.indexOf('cannot log in')){
+            adapter.log.error('Error: ' + e + '. Incorrect username or password');
         }
         if (~e.indexOf('ECONNRESET') || ~e.indexOf('closed') || ~e.indexOf('ended') || ~e.indexOf('Timeout') && !er){
             connection.close();

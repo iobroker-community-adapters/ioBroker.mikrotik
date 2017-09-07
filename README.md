@@ -9,6 +9,10 @@ ioBroker MikroTik Router adapter
 
 ## Changelog
 
+#### 0.0.20
+* (instalator) add mask for password in settings dialog
+* (instalator) added info error login or password
+
 #### 0.0.12
 * (instalator) change logic connect
 
