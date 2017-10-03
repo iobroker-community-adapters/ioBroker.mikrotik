@@ -342,9 +342,10 @@ function ParseInterface(d, cb){
 
 function ParseWiFi(d, cb){
     var res = [];
-    var name = '';
+    var name;
     states.lists.wifi_list = [];
     d.forEach(function(item, i) {
+        name = '';
         if(d[i]["mac-address"]!== undefined){
             getNameWiFi(d[i]["mac-address"], function(n){
                 name = n;
