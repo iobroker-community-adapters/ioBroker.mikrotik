@@ -342,10 +342,12 @@ function ParseInterface(d, cb){
 
 function ParseWiFi(d, cb){
     var res = [];
+    var name =;
     states.lists.wifi_list = [];
     d.forEach(function(item, i) {
         if(d[i]["mac-address"]!== undefined){
-            getNameWiFi(d[i]["mac-address"], function(name){
+            getNameWiFi(d[i]["mac-address"], function(n){
+                name = n;
                 res.push({
                     "last-ip":       d[i]["last-ip"],
                     "id":            d[i][".id"],
@@ -358,7 +360,8 @@ function ParseWiFi(d, cb){
         }
         states.lists.wifi_list.push({
             "ip":    d[i]["last-ip"],
-            "mac":   d[i]["mac-address"]
+            "mac":   d[i]["mac-address"],
+            "name":  name
         });
     });
     states.wireless = res;
@@ -386,7 +389,8 @@ function ParseDHCP(d, cb){
             states.lists.dhcp_list.push(
                 {
                     "ip":  d[i]["address"],
-                    "mac": d[i]["mac-address"]
+                    "mac": d[i]["mac-address"],
+                    "name":  d[i]["host-name"]
                 });
         }
     });
