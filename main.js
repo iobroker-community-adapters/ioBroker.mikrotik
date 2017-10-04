@@ -386,12 +386,12 @@ function ParseDHCP(d, cb){
                     "blocked":     d[i]["blocked"]
                 });
         }
-        if(d[i]["host-name"]!== undefined && d[i]["status"] !== 'waiting'){
+        if(/*d[i]["host-name"]!== undefined && */d[i]["status"] !== 'waiting'){
             states.lists.dhcp_list.push(
                 {
                     "ip":  d[i]["address"],
                     "mac": d[i]["mac-address"],
-                    "name":  d[i]["host-name"]
+                    "name":  d[i]["host-name"] ? d[i]["host-name"] : ''
                 });
         }
     });
