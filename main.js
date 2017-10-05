@@ -386,7 +386,7 @@ function ParseDHCP(d, cb){
                     "blocked":     d[i]["blocked"]
                 });
         }
-        if(/*d[i]["host-name"]!== undefined && */d[i]["status"] !== 'waiting'){
+        if(d[i]["status"] !== 'waiting'){
             states.lists.dhcp_list.push(
                 {
                     "ip":  d[i]["address"],
