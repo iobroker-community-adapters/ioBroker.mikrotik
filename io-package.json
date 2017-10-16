@@ -71,6 +71,10 @@
         },
         "platform": "Javascript/Node.js",
         "mode": "daemon",
+        "license":                  "MIT",
+	"authors": [
+            "instalator"
+        ],
         "icon": "mikrotik.png",
         "enabled": false,
         "extIcon": "https://raw.githubusercontent.com/instalator/iobroker.mikrotik/master/admin/mikrotik.png",
