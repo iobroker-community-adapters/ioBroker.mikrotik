@@ -78,10 +78,19 @@
         "icon": "mikrotik.png",
         "enabled": false,
         "extIcon": "https://raw.githubusercontent.com/instalator/iobroker.mikrotik/master/admin/mikrotik.png",
-        "keywords": ["ioBroker", "mikrotik"],
+        "keywords": [
+            "ioBroker",
+            "mikrotik"
+        ],
         "readme": "https://github.com/instalator/iobroker.mikrotik/blob/master/README.md",
         "loglevel": "info",
-        "type": "hardware"
+        "type": "hardware",
+        "authors": [
+            {
+                "name": "instalator",
+                "email": "vvvalt@mail.ru"
+            }
+        ]
     },
     "native": {
         "host": "192.168.88.1",
@@ -89,9 +98,7 @@
         "login": "admin",
         "password": ""
     },
-    "objects": [
-
-    ],
+    "objects": [],
     "instanceObjects": [
         {
             "_id": "info.connection",
@@ -104,8 +111,7 @@
                 "write": false,
                 "def": false
             },
-            "native": {
-            }
+            "native": {}
         },
         {
             "_id": "commands.reboot",
@@ -118,8 +124,7 @@
                 "write": true,
                 "def": false
             },
-            "native": {
-            }
+            "native": {}
         },
         {
             "_id": "commands.shutdown",
@@ -132,8 +137,7 @@
                 "write": true,
                 "def": false
             },
-            "native": {
-            }
+            "native": {}
         },
         {
             "_id": "commands.raw",
@@ -145,8 +149,7 @@
                 "read": false,
                 "write": true
             },
-            "native": {
-            }
+            "native": {}
         },
         {
             "_id": "commands.usb_reset",
@@ -159,8 +162,7 @@
                 "write": true,
                 "def": false
             },
-            "native": {
-            }
+            "native": {}
         }
     ]
 }
