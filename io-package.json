@@ -1,8 +1,16 @@
 {
     "common": {
         "name": "mikrotik",
-        "version": "0.0.20",
+        "version": "1.0.0",
         "news": {
+		"1.0.0": {
+                "en": "up to stable",
+                "de": "up to stable",
+                "ru": "up to stable",
+                "pt": "up to stable",
+                "fr": "up to stable",
+                "nl": "up to stable"
+            },
             "0.0.20": {
                 "en": "add mask for password in settings dialog\nadded info error login or password",
                 "de": "add mask for password in settings dialog\nadded info error login or password",
