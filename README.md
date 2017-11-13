@@ -9,6 +9,9 @@ ioBroker MikroTik Router adapter
 
 ## Changelog
 
+#### 1.0.0
+* (instalator) up to stable
+
 #### 0.0.20
 * (instalator) add mask for password in settings dialog
 * (instalator) added info error login or password
