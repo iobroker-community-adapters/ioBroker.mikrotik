@@ -1,7 +1,7 @@
 "use strict";
 
 var utils =    require(__dirname + '/lib/utils');
-var adapter = utils.adapter('mikrotik');
+var adapter = utils.Adapter('mikrotik');
 var MikroNode = require('mikronode-ng');
 
 var _poll, poll_time = 5000, connect = false, timer;
