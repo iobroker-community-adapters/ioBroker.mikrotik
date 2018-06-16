@@ -93,6 +93,7 @@
         ],
         "icon": "mikrotik.png",
         "enabled": false,
+	"materialize": true,
         "extIcon": "https://raw.githubusercontent.com/instalator/iobroker.mikrotik/master/admin/mikrotik.png",
         "keywords": [
             "ioBroker",
