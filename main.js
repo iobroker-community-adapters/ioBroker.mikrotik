@@ -4,7 +4,7 @@ var utils =    require(__dirname + '/lib/utils');
 var adapter = utils.Adapter('mikrotik');
 var MikroNode = require('mikronode-ng');
 
-var _poll, poll_time = 5000, connect = false, timer, iswlan = true;
+var _poll, poll_time = 5000, connect = false, timer, iswlan = false;
 var con, _con, connection;
 var states = {
     "wireless" :    [],
@@ -369,8 +369,8 @@ function ParseInterface(d, cb){
                 "running":      d[i]["running"]
             });
         }
-        if(d[i]["type"] !== 'wlan'){
-            iswlan = false;
+        if(d[i]["type"] === 'wlan'){
+            iswlan = true;
         }
     });
     states.interface = res;
