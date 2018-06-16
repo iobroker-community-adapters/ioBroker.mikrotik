@@ -1,9 +1,17 @@
 {
     "common": {
         "name": "mikrotik",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "news": {
-		"1.0.0": {
+            "1.0.1": {
+                "en": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
+                "de": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
+                "ru": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
+                "pt": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
+                "fr": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
+                "nl": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'"
+            },
+		    "1.0.0": {
                 "en": "up to stable",
                 "de": "up to stable",
                 "ru": "up to stable",
@@ -104,7 +112,8 @@
         "host": "192.168.88.1",
         "port": 8728,
         "login": "admin",
-        "password": ""
+        "password": "",
+        "timeout": 10
     },
     "objects": [],
     "instanceObjects": [
@@ -166,6 +175,19 @@
                 "role": "button",
                 "name": "USB power reset",
                 "type": "boolean",
+                "read": false,
+                "write": true,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "commands.add_firewall",
+            "type": "state",
+            "common": {
+                "role": "state",
+                "name": "add firewall address to firewall list",
+                "type": "string",
                 "read": false,
                 "write": true,
                 "def": false

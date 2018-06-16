@@ -4,7 +4,7 @@ var utils =    require(__dirname + '/lib/utils');
 var adapter = utils.Adapter('mikrotik');
 var MikroNode = require('mikronode-ng');
 
-var _poll, poll_time = 5000, connect = false, timer;
+var _poll, poll_time = 5000, connect = false, timer, iswlan = true;
 var con, _con, connection;
 var states = {
     "wireless" :    [],
@@ -12,21 +12,25 @@ var states = {
     "interface" :   [],
     "filter" :      [],
     "nat" :         [],
+    "firewall" :    [],
     "lists":        {
-        "dhcp_list" :   [],
-        "wifi_list" :   []
+        "dhcp_list" :    [],
+        "wifi_list" :    [],
+        "firewall_list": []
     },
     "systeminfo" :  {}
 };
 var old_states = {
-        "wireless" :    [],
-        "dhcp" :        [],
-        "interface" :   [],
-        "filter" :      [],
-        "nat" :         [],
-        "lists":        {
+    "wireless" :    [],
+    "dhcp" :        [],
+    "interface" :   [],
+    "filter" :      [],
+    "nat" :         [],
+    "firewall" :    [],
+    "lists":        {
         "dhcp_list" :   [],
-            "wifi_list" :   []
+        "wifi_list" :   [],
+        "firewall_list": []
     },
     "systeminfo" :  {}
 };
@@ -34,7 +38,8 @@ var old_states = {
 var commands = {
     "reboot": "/system/reboot",
     "shutdown": "/system/shutdown",
-    "usb_reset": "/system/routerboard/usb/power-reset"
+    "usb_reset": "/system/routerboard/usb/power-reset",
+    "add_firewall": ""
 };
 
 adapter.on('unload', function (callback) {
@@ -61,7 +66,13 @@ adapter.on('stateChange', function (id, state) {
         var cmd = ids[ids.length - 1].toString().toLowerCase();
         //adapter.log.error('[cmd] = ' + cmd);
         if(commands[cmd] !== undefined){
-            SetCommand(commands[cmd]);
+            if(cmd === 'add_firewall'){
+                var cmdlist = val.split(",");
+                // e.g.  "name,127.0.0.1,comment"
+                SetCommand('/ip/firewall/address-list/add\n=list=' + cmdlist[0] + '\n=address=' + cmdlist[1] + '/24\n=comment=' + cmdlist[2]);
+            } else {
+                SetCommand(commands[cmd]);
+            }
         }
         if(cmd === 'raw'){
             SetCommand(val);
@@ -97,6 +108,9 @@ function GetCmd(id, cmd, _id, val){
     }
     if(ids[2] === 'nat'){
         set = '/ip/firewall/nat/set\n=disabled='+ val + '\n=.id=*' + _id;
+    }
+    if(ids[2] === 'firewall'){
+        set = '/ip/firewall/address-list/set\n=disabled='+ val + '\n=.id=*' + _id;
     }
     SetCommand(set);
 }
@@ -139,7 +153,7 @@ function main(){
     if(con.host && con.port){
         var _connection = MikroNode.getConnection(con.host, con.login, con.password, {
             port:           con.port,
-            timeout:        10,
+            timeout:        adapter.config.timeout ? adapter.config.timeout: 10,
             closeOnTimeout: true,
             closeOnDone:    false
         });
@@ -175,7 +189,7 @@ function ch1(cb){
         if(!flag){
             flag = true;
             ch.on('error', function (e, chan){
-                //adapter.log.debug('Oops: ' + e);
+                adapter.log.debug('Oops: ' + e);
             });
         }
     });
@@ -238,17 +252,22 @@ function ch5(cb){
 }
 
 function ch6(cb){
-    _con.write('/interface/wireless/registration-table/print', function(ch) {
-        ch.once('done', function(p, chan) {
-            var d = MikroNode.parseItems(p);
-            ParseWiFi(d);
-            adapter.log.debug('/interface/wireless/registration-table/print' + JSON.stringify(d));
-            if(cb){cb();}
+    if(iswlan){
+        _con.write('/interface/wireless/registration-table/print', function (ch){
+            ch.once('done', function (p, chan){
+                    var d = MikroNode.parseItems(p);
+                    ParseWiFi(d);
+                    adapter.log.debug('/interface/wireless/registration-table/print' + JSON.stringify(d));
+                    if (cb){cb();}
+                });
+            /*ch.once('error', function(e, chan) {
+             err(e, true);
+             });*/
         });
-        /*ch.once('error', function(e, chan) {
-            err(e, true);
-        });*/
-    });
+    } else {
+        adapter.log.debug('Mikrotik is not WiFi');
+        if (cb){cb();}
+    }
 }
 
 function ch7(cb){
@@ -260,8 +279,22 @@ function ch7(cb){
             if(cb){cb();}
         });
         /*ch.once('error', function(e, chan) {
-            err(e, true);
-        });*/
+         err(e, true);
+         });*/
+    });
+}
+
+function ch8(cb){
+    _con.write('/ip/firewall/address-list/print', function(ch) {
+        ch.once('done', function(p, chan) {
+            var d = MikroNode.parseItems(p);
+            ParseFirewallList(d);
+            adapter.log.debug('/ip/firewall/address-list/print' + JSON.stringify(d));
+            if(cb){cb();}
+        });
+        /*ch.once('error', function(e, chan) {
+         err(e, true);
+         });*/
     });
 }
 
@@ -275,7 +308,9 @@ function parse(){
                         ch5(function (){
                             ch6(function (){
                                 ch7(function (){
-                                    SetStates();
+                                    ch8(function (){
+                                        SetStates();
+                                    });
                                 });
                             });
                         });
@@ -334,11 +369,13 @@ function ParseInterface(d, cb){
                 "running":      d[i]["running"]
             });
         }
+        if(d[i]["type"] !== 'wlan'){
+            iswlan = false;
+        }
     });
     states.interface = res;
     //cb();
 }
-
 
 function ParseWiFi(d, cb){
     var res = [];
@@ -408,6 +445,30 @@ function ParseWAN(d, cb){
             }
         }
     });
+    //cb();
+}
+
+function ParseFirewallList(d, cb){
+    var res = [];
+    var name;
+    states.lists.firewall_list = [];
+    d.forEach(function(item, i) {
+        name = '';
+        if(d[i]["address"]!== undefined){
+            res.push({
+                    "address":   d[i]["address"],
+                    "id":        d[i][".id"],
+                    "name":      d[i]["list"],
+                    "disabled":  d[i]["disabled"],
+                    "comment":   d[i]["comment"]
+            });
+        }
+        states.lists.firewall_list.push({
+            "name":        d[i]["list"],
+            "address":     d[i]["address"]
+        });
+    });
+    states.firewall = res;
     //cb();
 }
 

@@ -9,6 +9,12 @@ ioBroker MikroTik Router adapter
 
 ## Changelog
 
+#### 1.0.1
+* (instalator) Change in objects symbol "*" to "_", see issues#10
+* (instalator) fix issues#9
+* (instalator) add to settings Timeout get
+* (instalator) add firewall list issues#7 and command 'add_firewall' e.g. "name,127.0.0.1,comment"
+
 #### 1.0.0
 * (instalator) up to stable
 
