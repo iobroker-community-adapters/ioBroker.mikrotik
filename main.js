@@ -4,7 +4,7 @@ var utils =    require(__dirname + '/lib/utils');
 var adapter = utils.Adapter('mikrotik');
 var MikroNode = require('mikronode-ng');
 
-var _poll, poll_time = 5000, connect = false, timer, iswlan = false;
+var _poll, poll_time, connect = false, timer, iswlan = false;
 var con, _con, connection;
 var states = {
     "wireless" :    [],
@@ -77,6 +77,11 @@ adapter.on('stateChange', function (id, state) {
         if(cmd === 'raw'){
             SetCommand(val);
         }
+        if(cmd === 'send_sms'){
+            //system resource usb print
+            //port print detail 
+            //tool sms send port=usb1 channel=2 phone-number="+7..." message="text"
+        }
         if (cmd === 'disabled'){
             var _id;
             id = id.replace('disabled', 'id');
@@ -143,7 +148,7 @@ adapter.on('ready', function () {
 
 function main(){
     adapter.subscribeStates('*');
-
+    poll_time = adapter.config.poll ? adapter.config.poll: 5000;
     con = {
         "host" : adapter.config.host ? adapter.config.host: "192.168.1.11",
         "port" : adapter.config.port ? adapter.config.port: 8728,

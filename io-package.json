@@ -1,8 +1,16 @@
 {
     "common": {
         "name": "mikrotik",
-        "version": "1.0.1",
+        "version": "1.0.2",
         "news": {
+            "1.0.2": {
+                "en": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
+                "de": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
+                "ru": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
+                "pt": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
+                "fr": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
+                "nl": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling"
+            },
             "1.0.1": {
                 "en": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
                 "de": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
@@ -111,7 +119,8 @@
         "port": 8728,
         "login": "admin",
         "password": "",
-        "timeout": 10
+        "timeout": 10,
+        "poll": 5000
     },
     "objects": [],
     "instanceObjects": [

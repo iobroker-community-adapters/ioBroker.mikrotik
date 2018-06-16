@@ -23,6 +23,11 @@ Reset power USB in mikrotik
 
 ## Changelog
 
+#### 1.0.2
+* (bondrogeen) added support for the Admin 3
+* (instalator) fixed some bugs
+* (instalator) added in settings time polling
+
 #### 1.0.1
 * (instalator) Change in objects symbol "*" to "_", see [issues#10](https://github.com/instalator/ioBroker.mikrotik/issues/10)
 * (instalator) fix [issues#9](https://github.com/instalator/ioBroker.mikrotik/issues/9)
