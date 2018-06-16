@@ -463,7 +463,7 @@ function ParseFirewallList(d, cb){
             res.push({
                     "address":   d[i]["address"],
                     "id":        d[i][".id"],
-                    "name":      d[i]["list"],
+                    "name":      d[i]["list"] + d[i][".id"].replace('*', '_'),
                     "disabled":  d[i]["disabled"],
                     "comment":   d[i]["comment"]
             });
