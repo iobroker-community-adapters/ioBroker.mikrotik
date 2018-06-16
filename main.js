@@ -429,7 +429,7 @@ function SetStates(){
                                 ids = key + '.' + states[key][i]['name'] + '.' + k;
                             }
                         } else {
-                            ids = key + '.id' + states[key][i]['id'] + '.' + k;
+                            ids = key + '.id' + states[key][i]['id'].replace('*', '_') + '.' + k;
                         }
                         setObject(ids, states[key][i][k]);
                     }
