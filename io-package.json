@@ -87,13 +87,10 @@
         },
         "platform": "Javascript/Node.js",
         "mode": "daemon",
-        "license":                  "MIT",
-	"authors": [
-            "instalator"
-        ],
+        "license": "MIT",
         "icon": "mikrotik.png",
         "enabled": false,
-	"materialize": true,
+        "materialize": true,
         "extIcon": "https://raw.githubusercontent.com/instalator/iobroker.mikrotik/master/admin/mikrotik.png",
         "keywords": [
             "ioBroker",
