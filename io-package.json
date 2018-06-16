@@ -186,7 +186,7 @@
             "type": "state",
             "common": {
                 "role": "state",
-                "name": "add firewall address to firewall list",
+                "name": "add address to firewall",
                 "type": "string",
                 "read": false,
                 "write": true,
