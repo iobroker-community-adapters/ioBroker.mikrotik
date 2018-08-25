@@ -120,14 +120,14 @@
         "login": "admin",
         "password": "",
         "timeout": 10,
-        "ch1": true,
-        "ch2": true,
-        "ch3": true,
-        "ch4": true,
-        "ch5": true,
-        "ch6": true,
-        "ch7": true,
-        "ch8": true
+        "ch1": "checked",
+        "ch2": "checked",
+        "ch3": "checked",
+        "ch4": "checked",
+        "ch5": "checked",
+        "ch6": "checked",
+        "ch7": "checked",
+        "ch8": "checked"
     },
     "objects": [],
     "instanceObjects": [

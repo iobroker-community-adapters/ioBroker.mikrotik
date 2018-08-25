@@ -10,6 +10,7 @@ systemDictionary = {
 	"sec":                   	{"en": "seconds", "de": "sekunden", "ru": "секунды"},
 	"ms":                   	{"en": "milliseconds", "de": "millisekunden", "ru": "миллисекунды"},
 	"poll":                   	{"en": "Data refresh interval", "de": "Daten Aktualisierungsintervall", "ru": "Интервал обновления данных"},
+	"following":                {"en": "receive the following data:", "de": "receive the following data:", "ru": "Получать следующие данные:"},
 	"ch1":                   	{"en": "resource", "de": "resource", "ru": "resource"},
 	"ch2":                   	{"en": "firewall/nat", "de": "firewall/nat", "ru": "firewall/nat"},
 	"ch3":                   	{"en": "dhcp-server/lease", "de": "dhcp-server/lease", "ru": "dhcp-server/lease"},
