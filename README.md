@@ -23,6 +23,9 @@ Reset power USB in mikrotik
 
 ## Changelog
 
+#### 1.0.3
+* (instalator) added checkboxes - receive the following data
+
 #### 1.0.2
 * (bondrogeen) added support for the Admin 3
 * (instalator) fixed some bugs
