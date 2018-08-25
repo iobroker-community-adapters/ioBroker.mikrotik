@@ -120,7 +120,14 @@
         "login": "admin",
         "password": "",
         "timeout": 10,
-        "poll": 5000
+        "ch1": true,
+        "ch2": true,
+        "ch3": true,
+        "ch4": true,
+        "ch5": true,
+        "ch6": true,
+        "ch7": true,
+        "ch8": true
     },
     "objects": [],
     "instanceObjects": [

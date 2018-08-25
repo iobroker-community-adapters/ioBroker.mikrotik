@@ -184,123 +184,144 @@ function main(){
 }
 var flag = false;
 function ch1(cb){
-    _con.write('/system/resource/print', function(ch) {
-        ch.once('done', function(p, chan) {
-            var d = MikroNode.parseItems(p);
-            states.systeminfo = d[0];
-            adapter.log.debug('/system/resource/print' + JSON.stringify(d));
-            if(cb){cb();}
-        });
-        if(!flag){
-            flag = true;
-            ch.on('error', function (e, chan){
-                adapter.log.debug('Oops: ' + e);
+    if(adapter.config.ch1){
+        _con.write(
+            '/system/resource/print', function (ch){
+                ch.once(
+                    'done', function (p, chan){
+                        var d = MikroNode.parseItems(p);
+                        states.systeminfo = d[0];
+                        adapter.log.debug('/system/resource/print' + JSON.stringify(d));
+                        if (cb){
+                            cb();
+                        }
+                    });
+                if (!flag){
+                    flag = true;
+                    ch.on(
+                        'error', function (e, chan){
+                            adapter.log.debug('Oops: ' + e);
+                        });
+                }
             });
-        }
-    });
+    } else cb();
 }
 
 function ch2(cb){
-    _con.write('/ip/firewall/nat/print', function(ch) {
-        ch.once('done', function(p, chan) {
-            var d = MikroNode.parseItems(p);
-            ParseNat(d);
-            adapter.log.debug('/ip/firewall/nat/print' + JSON.stringify(d));
-            if(cb){cb();}
+    if(adapter.config.ch2){
+        _con.write('/ip/firewall/nat/print', function(ch) {
+            ch.once('done', function(p, chan) {
+                var d = MikroNode.parseItems(p);
+                ParseNat(d);
+                adapter.log.debug('/ip/firewall/nat/print' + JSON.stringify(d));
+                if(cb){cb();}
+            });
+            /*ch.once('error', function(e, chan) {
+                err(e, true);
+            });*/
         });
-        /*ch.once('error', function(e, chan) {
-            err(e, true);
-        });*/
-    });
+    } else cb();
 }
 
 function ch3(cb){
-    _con.write('/ip/dhcp-server/lease/print', function(ch) {
-        ch.once('done', function(p, chan) {
-            var d = MikroNode.parseItems(p);
-            ParseDHCP(d);
-            adapter.log.debug('/ip/dhcp-server/lease/print' + JSON.stringify(d));
-            if(cb){cb();}
+    if(adapter.config.ch3){
+        _con.write('/ip/dhcp-server/lease/print', function(ch) {
+            ch.once('done', function(p, chan) {
+                var d = MikroNode.parseItems(p);
+                ParseDHCP(d);
+                adapter.log.debug('/ip/dhcp-server/lease/print' + JSON.stringify(d));
+                if(cb){cb();}
+            });
+            /*ch.once('error', function(e, chan) {
+                err(e, true);
+            });*/
         });
-        /*ch.once('error', function(e, chan) {
-            err(e, true);
-        });*/
-    });
+    } else cb();
 }
 
 function ch4(cb){
-    _con.write('/interface/print', function(ch) {
-        ch.once('done', function(p, chan) {
-            var d = MikroNode.parseItems(p);
-            ParseInterface(d);
-            adapter.log.debug('/interface/print' + JSON.stringify(d));
-            if(cb){cb();}
+    if(adapter.config.ch4){
+        _con.write('/interface/print', function(ch) {
+            ch.once('done', function(p, chan) {
+                var d = MikroNode.parseItems(p);
+                ParseInterface(d);
+                adapter.log.debug('/interface/print' + JSON.stringify(d));
+                if(cb){cb();}
+            });
+            /*ch.once('error', function(e, chan) {
+                err(e, true);
+            });*/
         });
-        /*ch.once('error', function(e, chan) {
-            err(e, true);
-        });*/
-    });
+    } else cb();
 }
 
 function ch5(cb){
-    _con.write('/ip/firewall/filter/print', function(ch) {
-        ch.once('done', function(p, chan) {
-            var d = MikroNode.parseItems(p);
-            ParseFilter(d);
-            adapter.log.debug('/ip/firewall/filter/print' + JSON.stringify(d));
-            if(cb){cb();}
+    if(adapter.config.ch5){
+        _con.write('/ip/firewall/filter/print', function(ch) {
+            ch.once('done', function(p, chan) {
+                var d = MikroNode.parseItems(p);
+                ParseFilter(d);
+                adapter.log.debug('/ip/firewall/filter/print' + JSON.stringify(d));
+                if(cb){cb();}
+            });
+            /*ch.once('error', function(e, chan) {
+                err(e, true);
+            });*/
         });
-        /*ch.once('error', function(e, chan) {
-            err(e, true);
-        });*/
-    });
+    } else cb();
 }
 
 function ch6(cb){
-    if(iswlan){
-        _con.write('/interface/wireless/registration-table/print', function (ch){
-            ch.once('done', function (p, chan){
-                    var d = MikroNode.parseItems(p);
-                    ParseWiFi(d);
-                    adapter.log.debug('/interface/wireless/registration-table/print' + JSON.stringify(d));
-                    if (cb){cb();}
-                });
+    if(adapter.config.ch6){
+        if(iswlan){
+            _con.write('/interface/wireless/registration-table/print', function (ch){
+                ch.once('done', function (p, chan){
+                        var d = MikroNode.parseItems(p);
+                        ParseWiFi(d);
+                        adapter.log.debug('/interface/wireless/registration-table/print' + JSON.stringify(d));
+                        if (cb){cb();}
+                    });
+                /*ch.once('error', function(e, chan) {
+                 err(e, true);
+                 });*/
+            });
+        } else {
+            adapter.log.debug('Mikrotik is not WiFi');
+            if (cb){cb();}
+        }
+    } else cb();
+}
+
+function ch7(cb){
+    if(adapter.config.ch7){
+        _con.write('/ip/address/print', function(ch) {
+            ch.once('done', function(p, chan) {
+                var d = MikroNode.parseItems(p);
+                ParseWAN(d);
+                adapter.log.debug('/ip/address/print' + JSON.stringify(d));
+                if(cb){cb();}
+            });
             /*ch.once('error', function(e, chan) {
              err(e, true);
              });*/
         });
-    } else {
-        adapter.log.debug('Mikrotik is not WiFi');
-        if (cb){cb();}
-    }
-}
-
-function ch7(cb){
-    _con.write('/ip/address/print', function(ch) {
-        ch.once('done', function(p, chan) {
-            var d = MikroNode.parseItems(p);
-            ParseWAN(d);
-            adapter.log.debug('/ip/address/print' + JSON.stringify(d));
-            if(cb){cb();}
-        });
-        /*ch.once('error', function(e, chan) {
-         err(e, true);
-         });*/
-    });
+    } else cb();    
 }
 
 function ch8(cb){
-    _con.write('/ip/firewall/address-list/print', function(ch) {
-        ch.once('done', function(p, chan) {
-            var d = MikroNode.parseItems(p);
-            ParseFirewallList(d);
-            adapter.log.debug('/ip/firewall/address-list/print' + JSON.stringify(d));
-            if(cb){cb();}
+    if(adapter.config.ch8){
+        _con.write('/ip/firewall/address-list/print', function(ch) {
+            ch.once('done', function(p, chan) {
+                var d = MikroNode.parseItems(p);
+                ParseFirewallList(d);
+                adapter.log.debug('/ip/firewall/address-list/print' + JSON.stringify(d));
+                if(cb){cb();}
+            });
+            /*ch.once('error', function(e, chan) {
+             err(e, true);
+             });*/
         });
-        /*ch.once('error', function(e, chan) {
-         err(e, true);
-         });*/
-    });
+    } else cb();
 }
 
 function parse(){
