@@ -184,7 +184,7 @@ function main(){
 }
 var flag = false;
 function ch1(cb){
-    if(adapter.config.ch1){
+    //if(adapter.config.ch1){
         _con.write(
             '/system/resource/print', function (ch){
                 ch.once(
@@ -204,7 +204,7 @@ function ch1(cb){
                         });
                 }
             });
-    } else cb();
+    //} else cb();
 }
 
 function ch2(cb){

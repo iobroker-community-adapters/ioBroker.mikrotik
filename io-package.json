@@ -1,8 +1,16 @@
 {
     "common": {
         "name": "mikrotik",
-        "version": "1.0.2",
+        "version": "1.0.3",
         "news": {
+            "1.0.3": {
+                "en": "added checkboxes - receive the following data",
+                "de": "added checkboxes - receive the following data",
+                "ru": "added checkboxes - receive the following data",
+                "pt": "added checkboxes - receive the following data",
+                "fr": "added checkboxes - receive the following data",
+                "nl": "added checkboxes - receive the following data"
+            },
             "1.0.2": {
                 "en": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
                 "de": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
@@ -120,7 +128,6 @@
         "login": "admin",
         "password": "",
         "timeout": 10,
-        "ch1": true,
         "ch2": true,
         "ch3": true,
         "ch4": true,
