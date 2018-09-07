@@ -189,6 +189,18 @@
             },
             "native": {}
         },
+	{
+            "_id": "commands.response",
+            "type": "state",
+            "common": {
+                "role": "json",
+                "name": "response router api",
+                "type": "string",
+                "read": true,
+                "write": false
+            },
+            "native": {}
+        },
         {
             "_id": "commands.usb_reset",
             "type": "state",
