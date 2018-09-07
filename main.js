@@ -69,7 +69,7 @@ adapter.on('stateChange', function (id, state) {
             if(cmd === 'add_firewall'){
                 var cmdlist = val.split(",");
                 // e.g.  "name,127.0.0.1,comment"
-                SetCommand('/ip/firewall/address-list/add\n=list=' + cmdlist[0] + '\n=address=' + cmdlist[1] + '/24\n=comment=' + cmdlist[2]);
+                SetCommand('/ip/firewall/address-list/add\n=list=' + cmdlist[0] + '\n=address=' + cmdlist[1] + '\n=comment=' + cmdlist[2]);
             } else {
                 SetCommand(commands[cmd]);
             }
