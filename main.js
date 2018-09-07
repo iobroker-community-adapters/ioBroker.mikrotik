@@ -64,10 +64,11 @@ adapter.on('stateChange', function (id, state) {
         var ids = id.split(".");
         var val = state.val;
         var cmd = ids[ids.length - 1].toString().toLowerCase();
+        var cmdlist;
         //adapter.log.error('[cmd] = ' + cmd);
         if(commands[cmd] !== undefined){
             if(cmd === 'add_firewall'){
-                var cmdlist = val.split(",");
+                cmdlist = val.split(",");
                 // e.g.  "name,127.0.0.1,comment"
                 SetCommand('/ip/firewall/address-list/add\n=list=' + cmdlist[0] + '\n=address=' + cmdlist[1] + '\n=comment=' + cmdlist[2]);
             } else {
@@ -75,7 +76,8 @@ adapter.on('stateChange', function (id, state) {
             }
         }
         if(cmd === 'raw'){
-            SetCommand(val);
+            cmdlist = val.split(",");
+            SetCommand(cmdlist);
         }
         if(cmd === 'send_sms'){
             //system resource usb print
@@ -126,6 +128,7 @@ function SetCommand(set){
         ch.once('done', function(p, chan) {
             var d = MikroNode.parseItems(p);
             adapter.log.info('SetCommand response: ' + JSON.stringify(d));
+            adapter.setState('commands.response', JSON.stringify(d), true);
         });
         ch.on('error', function(err, chan) {
             err(err);
