@@ -1,8 +1,16 @@
 {
     "common": {
         "name": "mikrotik",
-        "version": "1.0.3",
+        "version": "1.0.4",
         "news": {
+            "1.0.4": {
+                "en": "fix add_firewall command",
+                "de": "fix add_firewall command",
+                "ru": "fix add_firewall command",
+                "pt": "fix add_firewall command",
+                "fr": "fix add_firewall command",
+                "nl": "fix add_firewall command"
+            },
             "1.0.3": {
                 "en": "added checkboxes - receive the following data",
                 "de": "added checkboxes - receive the following data",
