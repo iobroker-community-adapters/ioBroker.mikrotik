@@ -100,7 +100,7 @@
                 "nl": "Eerste release"
             }
         },
-        "title": "MikroTik Router adapter",
+        "title": "MikroTik Router",
         "desc": {
             "en": "ioBroker mikrotik Adapter",
             "de": "ioBroker Mikrotik Adapter",
