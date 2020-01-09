@@ -1,8 +1,16 @@
 {
     "common": {
         "name": "mikrotik",
-        "version": "1.0.4",
+        "version": "1.0.5",
         "news": {
+	    "1.0.5": {
+                "en": "Update Login Protocol",
+                "de": "Update Login Protocol",
+                "ru": "Update Login Protocol",
+                "pt": "Update Login Protocol",
+                "fr": "Update Login Protocol",
+                "nl": "Update Login Protocol"
+            },
             "1.0.4": {
                 "en": "fix add_firewall command",
                 "de": "fix add_firewall command",
