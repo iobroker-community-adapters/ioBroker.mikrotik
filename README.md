@@ -24,7 +24,7 @@ Reset power USB in mikrotik
 ## Changelog
 
 #### 1.0.5
-* (instalator) Update Login Protocol [issues#23]
+* (instalator) Update Login Protocol [issues#23](https://github.com/instalator/ioBroker.mikrotik/issues/23)
 
 #### 1.0.4
 * (instalator) fix add_firewall command [issues#18](https://github.com/instalator/ioBroker.mikrotik/issues/18#issue-358331248)
