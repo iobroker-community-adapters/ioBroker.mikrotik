@@ -184,7 +184,7 @@ function ch1(cb){
     //if(adapter.config.ch1){
     _con.write('/system/resource/print', (ch) => {
         ch.once(
-            'done', function (p, chan){
+            'done', (p, chan) => {
                 let d = MikroNode.parseItems(p);
                 states.systeminfo = d[0];
                 adapter.log.debug('/system/resource/print' + JSON.stringify(d));
@@ -320,7 +320,7 @@ function ch8(cb){
 
 function parse(){
     clearTimeout(_poll);
-    _poll = setTimeout(function (){
+    _poll = setTimeout(() => {
         ch1(() => {
             ch2(() => {
                 ch3(() => {
@@ -510,9 +510,9 @@ function ParseFirewallList(d, cb){
 }
 
 function SetStates(){
-    Object.keys(states).forEach(function (key){
+    Object.keys(states).forEach((key) => {
         if (states[key].length !== undefined && key !== 'lists'){
-            states[key].forEach(function (item, i){
+            states[key].forEach((item, i) => {
                 Object.keys(states[key][i]).forEach((k) => {
                     if (old_states[key][i] == undefined){
                         old_states[key].push({});
