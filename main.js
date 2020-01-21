@@ -447,7 +447,20 @@ function ParseDHCP(d, cb){
     let res = [];
     states.lists.dhcp_list = [];
     d.forEach((item, i) => {
-        if (d[i]["host-name"] !== undefined){
+        //if (d[i]["host-name"] !== undefined){
+        if(d[i]["host-name"] && ~d[i]["host-name"].indexOf('�')){
+            d[i]["host-name"] = d[i]["host-name"].replace(/[�]+/g, '');
+        }
+        if(d[i]["comment"] && ~d[i]["comment"].indexOf('�')){
+            d[i]["comment"] = d[i]["comment"].replace(/[�]+/g, '');
+        }
+        if(!d[i]["host-name"] && d[i]["mac-address"]){
+            if(d[i]["comment"]){
+                d[i]["host-name"] = d[i]["comment"];
+            } else {
+                d[i]["host-name"] = d[i]["mac-address"].replace(/[:]+/g, '');
+            }
+        }
             res.push(
                 {
                     "name":        d[i]["host-name"],
@@ -459,13 +472,13 @@ function ParseDHCP(d, cb){
                     "comment":     d[i]["comment"] ? d[i]["comment"] :'',
                     "blocked":     d[i]["blocked"]
                 });
-        }
+        //}
         if (d[i]["status"] !== 'waiting'){
             states.lists.dhcp_list.push(
                 {
                     "ip":   d[i]["address"],
                     "mac":  d[i]["mac-address"],
-                    "name": d[i]["host-name"] ? d[i]["host-name"] :''
+                    "name": d[i]["host-name"]
                 });
         }
     });
