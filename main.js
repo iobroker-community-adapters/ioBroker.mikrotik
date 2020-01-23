@@ -1,7 +1,6 @@
 "use strict";
-
 const utils = require('@iobroker/adapter-core');
-let adapter;// = utils.Adapter('mikrotik');
+let adapter;
 const MikroNode = require('mikronode-ng');
 let _poll, poll_time, connect = false, timer, iswlan = false;
 let con, _con, connection;
@@ -48,6 +47,7 @@ function startAdapter(options){
         ready:        main,
         unload:       (callback) => {
             clearTimeout(_poll);
+            clearTimeout(timer);
             if (connection){
                 _con.clearEvents = true;
                 connection.close();
@@ -128,7 +128,7 @@ function GetCmd(id, cmd, _id, val){
 function SetCommand(set){
     adapter.log.debug('SetCommand ' + set);
     _con.write(set, (ch) => {
-        ch.once('done', (p, chan) => {
+        ch.once('done', (p) => {
             let d = MikroNode.parseItems(p);
             adapter.log.info('SetCommand response: ' + JSON.stringify(d));
             adapter.setState('commands.response', JSON.stringify(d), true);
@@ -142,7 +142,7 @@ function SetCommand(set){
 
 function main(){
     adapter.subscribeStates('*');
-    poll_time = adapter.config.poll ? adapter.config.poll :5000;
+    poll_time = adapter.config.poll ? adapter.config.poll : 5000;
     con = {
         "host":     adapter.config.host ? adapter.config.host :"192.168.1.11",
         "port":     adapter.config.port ? adapter.config.port :8728,
@@ -152,7 +152,7 @@ function main(){
     if (con.host && con.port){
         let _connection = MikroNode.getConnection(con.host, con.login, con.password, {
             port:           con.port,
-            timeout:        adapter.config.timeout ? adapter.config.timeout :10,
+            timeout:        adapter.config.timeout ? adapter.config.timeout : 10,
             closeOnTimeout: true,
             closeOnDone:    false
         });
@@ -185,8 +185,8 @@ let flag = false;
 function ch1(cb){
     //if(adapter.config.ch1){
     _con.write('/system/resource/print', (ch) => {
-        ch.once(
-            'done', (p, chan) => {
+        //_con.closeOnDone = true;
+        _con.once('done', (p) => {
                 let d = MikroNode.parseItems(p);
                 states.systeminfo = d[0];
                 adapter.log.debug('/system/resource/print' + JSON.stringify(d));
@@ -195,7 +195,7 @@ function ch1(cb){
         if (!flag){
             flag = true;
             ch.on(
-                'error', (e, chan) => {
+                'error', (e) => {
                     adapter.log.debug('Oops: ' + e);
                 });
         }
@@ -205,14 +205,14 @@ function ch1(cb){
 
 function ch2(cb){
     if (adapter.config.ch2){
-        _con.write('/ip/firewall/nat/print', (ch) => {
-            ch.once('done', (p, chan) => {
+        _con.write('/ip/firewall/nat/print', () => {
+            _con.once('done', (p) => {
                 let d = MikroNode.parseItems(p);
                 ParseNat(d);
                 adapter.log.debug('/ip/firewall/nat/print' + JSON.stringify(d));
                 cb && cb();
             });
-            /*ch.once('error', function(e, chan) {
+            /*_con.once('error', function(e, chan) {
                 err(e, true);
             });*/
         });
@@ -221,15 +221,15 @@ function ch2(cb){
 
 function ch3(cb){
     if (adapter.config.ch3){
-        _con.write('/ip/dhcp-server/lease/print', (ch) => {
-            ch.once('done', (p, chan) => {
+        _con.write('/ip/dhcp-server/lease/print', () => {
+            _con.once('done', (p) => {
                 let d = MikroNode.parseItems(p);
                 ParseDHCP(d);
                 adapter.log.debug('/ip/dhcp-server/lease/print' + JSON.stringify(d));
                 cb && cb();
             });
 
-            /*ch.once('error', function(e, chan) {
+            /*_con.once('error', function(e, chan) {
                 err(e, true);
             });*/
         });
@@ -238,14 +238,14 @@ function ch3(cb){
 
 function ch4(cb){
     if (adapter.config.ch4){
-        _con.write('/interface/print', (ch) => {
-            ch.once('done', (p, chan) => {
+        _con.write('/interface/print', () => {
+            _con.once('done', (p) => {
                 let d = MikroNode.parseItems(p);
                 ParseInterface(d);
                 adapter.log.debug('/interface/print' + JSON.stringify(d));
                 cb && cb();
             });
-            /*ch.once('error', function(e, chan) {
+            /*_con.once('error', function(e, chan) {
                 err(e, true);
             });*/
         });
@@ -254,14 +254,14 @@ function ch4(cb){
 
 function ch5(cb){
     if (adapter.config.ch5){
-        _con.write('/ip/firewall/filter/print', (ch) => {
-            ch.once('done', (p, chan) => {
+        _con.write('/ip/firewall/filter/print', () => {
+            _con.once('done', (p) => {
                 let d = MikroNode.parseItems(p);
                 ParseFilter(d);
                 adapter.log.debug('/ip/firewall/filter/print' + JSON.stringify(d));
                 cb && cb();
             });
-            /*ch.once('error', function(e, chan) {
+            /*_con.once('error', function(e, chan) {
                 err(e, true);
             });*/
         });
@@ -271,14 +271,14 @@ function ch5(cb){
 function ch6(cb){
     if (adapter.config.ch6){
         if (iswlan){
-            _con.write('/interface/wireless/registration-table/print', (ch) => {
-                ch.once('done', (p, chan) => {
+            _con.write('/interface/wireless/registration-table/print', () => {
+                _con.once('done', (p) => {
                     let d = MikroNode.parseItems(p);
                     ParseWiFi(d);
                     adapter.log.debug('/interface/wireless/registration-table/print' + JSON.stringify(d));
                     cb && cb();
                 });
-                /*ch.once('error', function(e, chan) {
+                /*_con.once('error', function(e, chan) {
                  err(e, true);
                  });*/
             });
@@ -291,14 +291,14 @@ function ch6(cb){
 
 function ch7(cb){
     if (adapter.config.ch7){
-        _con.write('/ip/address/print', (ch) => {
-            ch.once('done', (p, chan) => {
+        _con.write('/ip/address/print', () => {
+            _con.once('done', (p) => {
                 let d = MikroNode.parseItems(p);
                 ParseWAN(d);
                 adapter.log.debug('/ip/address/print' + JSON.stringify(d));
                 cb && cb();
             });
-            /*ch.once('error', function(e, chan) {
+            /*_con.once('error', function(e, chan) {
              err(e, true);
              });*/
         });
@@ -307,14 +307,14 @@ function ch7(cb){
 
 function ch8(cb){
     if (adapter.config.ch8){
-        _con.write('/ip/firewall/address-list/print', (ch) => {
-            ch.once('done', (p, chan) => {
+        _con.write('/ip/firewall/address-list/print', () => {
+            _con.once('done', (p) => {
                 let d = MikroNode.parseItems(p);
                 ParseFirewallList(d);
                 adapter.log.debug('/ip/firewall/address-list/print' + JSON.stringify(d));
                 cb && cb();
             });
-            /*ch.once('error', function(e, chan) {
+            /*_con.once('error', function(e, chan) {
              err(e, true);
              });*/
         });
