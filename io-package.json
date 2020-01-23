@@ -1,8 +1,16 @@
 {
   "common": {
     "name": "mikrotik",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "news": {
+       "1.0.7": {
+        "en": "fix error",
+        "de": "fix error",
+        "ru": "fix error",
+        "pt": "fix error",
+        "fr": "fix error",
+        "nl": "fix error"
+      },
       "1.0.6": {
         "en": "added in interface RX/TX (packets)\nAdded Support for Compact mode\nRefactoring",
         "de": "added in interface RX/TX (packets)\nAdded Support for Compact mode\nRefactoring",
