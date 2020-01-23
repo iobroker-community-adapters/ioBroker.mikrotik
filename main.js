@@ -475,7 +475,7 @@ function ParseDHCP(d, cb){
                 {
                     "ip":   d[i]["address"],
                     "mac":  d[i]["mac-address"],
-                    "name": d[i]["host-name"]
+                    "name": d[i]["host-name"] ? d[i]["host-name"] : d[i]["comment"]
                 });
         }
     });
