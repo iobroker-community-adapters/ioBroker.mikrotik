@@ -160,6 +160,7 @@
     "login": "admin",
     "password": "",
     "timeout": 10,
+    "poll": 10000,
     "ch2": true,
     "ch3": true,
     "ch4": true,
