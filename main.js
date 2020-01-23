@@ -47,7 +47,9 @@ function startAdapter(options){
         name:         'mikrotik',
         ready:        main,
         unload:       (callback) => {
+            clearTimeout(_poll);
             if (connection){
+                _con.clearEvents = true;
                 connection.close();
             }
             try {
@@ -226,6 +228,7 @@ function ch3(cb){
                 adapter.log.debug('/ip/dhcp-server/lease/print' + JSON.stringify(d));
                 cb && cb();
             });
+
             /*ch.once('error', function(e, chan) {
                 err(e, true);
             });*/
@@ -377,8 +380,8 @@ function ParseFilter(d, cb){
 }
 
 function formatSize(d){
-    let i = 0, type = ['б','Кб','Мб','Гб','Тб','Пб'];
-    while((d / 1000 | 0) && i < type.length - 1) {
+    let i = 0, type = ['б', 'Кб', 'Мб', 'Гб', 'Тб', 'Пб'];
+    while ((d / 1000 | 0) && i < type.length - 1) {
         d /= 1024;
         i++;
     }
@@ -390,20 +393,20 @@ function ParseInterface(d, cb){
     d.forEach((item, i) => {
         if (d[i]["name"] !== undefined){
             res.push({
-                "name":        d[i]["name"],
-                "id":          d[i][".id"],
-                "type":        d[i]["type"],
-                "disabled":    d[i]["disabled"],
-                "mac-address": d[i]["mac-address"],
-                "running":     d[i]["running"],
-                "total_rx_byte":     d[i]["rx-byte"],
-                "total_tx_byte":     d[i]["tx-byte"],
-                "rx":               (((parseInt(d[i]["rx-byte"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_rx_byte'] : d[i]["rx-byte"])) / (adapter.config.poll / 1000)) * 0.008).toFixed(2),
-                "tx":               (((parseInt(d[i]["tx-byte"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_tx_byte'] : d[i]["tx-byte"])) / (adapter.config.poll / 1000)) * 0.008).toFixed(2),
-                "total_rx_packet":   d[i]["rx-packet"],
-                "total_tx_packet":   d[i]["tx-packet"],
-                "rx_packet":          ((parseInt(d[i]["rx-packet"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_rx_packet'] : d[i]["rx-packet"])) / (adapter.config.poll / 1000)).toFixed(0),
-                "tx_packet":          ((parseInt(d[i]["tx-packet"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_tx_packet'] : d[i]["tx-packet"])) / (adapter.config.poll / 1000)).toFixed(0),
+                "name":            d[i]["name"],
+                "id":              d[i][".id"],
+                "type":            d[i]["type"],
+                "disabled":        d[i]["disabled"],
+                "mac-address":     d[i]["mac-address"],
+                "running":         d[i]["running"],
+                "total_rx_byte":   d[i]["rx-byte"],
+                "total_tx_byte":   d[i]["tx-byte"],
+                "rx":              (((parseInt(d[i]["rx-byte"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_rx_byte'] :d[i]["rx-byte"])) / (adapter.config.poll / 1000)) * 0.008).toFixed(2),
+                "tx":              (((parseInt(d[i]["tx-byte"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_tx_byte'] :d[i]["tx-byte"])) / (adapter.config.poll / 1000)) * 0.008).toFixed(2),
+                "total_rx_packet": d[i]["rx-packet"],
+                "total_tx_packet": d[i]["tx-packet"],
+                "rx_packet":       ((parseInt(d[i]["rx-packet"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_rx_packet'] :d[i]["rx-packet"])) / (adapter.config.poll / 1000)).toFixed(0),
+                "tx_packet":       ((parseInt(d[i]["tx-packet"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_tx_packet'] :d[i]["tx-packet"])) / (adapter.config.poll / 1000)).toFixed(0),
             });
         }
         if (d[i]["type"] === 'wlan'){
@@ -447,31 +450,25 @@ function ParseDHCP(d, cb){
     let res = [];
     states.lists.dhcp_list = [];
     d.forEach((item, i) => {
-        //if (d[i]["host-name"] !== undefined){
-        if(d[i]["host-name"] && ~d[i]["host-name"].indexOf('�')){
-            d[i]["host-name"] = d[i]["host-name"].replace(/[�]+/g, '');
-        }
-        if(d[i]["comment"] && ~d[i]["comment"].indexOf('�')){
-            d[i]["comment"] = d[i]["comment"].replace(/[�]+/g, '');
-        }
-        if(!d[i]["host-name"] && d[i]["mac-address"]){
-            if(d[i]["comment"]){
+        //if (d[i]["host-name"]/* !== undefined*/){
+        if (!d[i]["host-name"] && d[i]["mac-address"]){
+            if (d[i]["comment"]){
                 d[i]["host-name"] = d[i]["comment"];
             } else {
                 d[i]["host-name"] = d[i]["mac-address"].replace(/[:]+/g, '');
             }
         }
-            res.push(
-                {
-                    "name":        d[i]["host-name"],
-                    "id":          d[i][".id"],
-                    "address":     d[i]["address"],
-                    "mac-address": d[i]["mac-address"],
-                    "server":      d[i]["server"],
-                    "status":      d[i]["status"],
-                    "comment":     d[i]["comment"] ? d[i]["comment"] :'',
-                    "blocked":     d[i]["blocked"]
-                });
+        res.push(
+            {
+                "name":        d[i]["host-name"] ? d[i]["host-name"] :d[i]["comment"],
+                "id":          d[i][".id"],
+                "address":     d[i]["address"],
+                "mac-address": d[i]["mac-address"],
+                "server":      d[i]["server"],
+                "status":      d[i]["status"],
+                "comment":     d[i]["comment"] ? d[i]["comment"] :'',
+                "blocked":     d[i]["blocked"]
+            });
         //}
         if (d[i]["status"] !== 'waiting'){
             states.lists.dhcp_list.push(
