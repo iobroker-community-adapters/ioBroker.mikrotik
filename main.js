@@ -152,8 +152,8 @@ function main(){
     if (con.host && con.port){
         let _connection = MikroNode.getConnection(con.host, con.login, con.password, {
             port:           con.port,
-            timeout:        adapter.config.timeout ? adapter.config.timeout :10,
-            closeOnTimeout: true,
+            timeout:        adapter.config.timeout ? (adapter.config.timeout + (poll_time/1000)) : (10 + (poll_time / 1000)),
+            closeOnTimeout: false,
             closeOnDone:    false
         });
         connection = _connection.connect((c) => {
@@ -183,10 +183,10 @@ function main(){
 let flag = false;
 
 function ch1(cb){
-    //if(adapter.config.ch1){
+    adapter.log.debug('ch1 send command');
     _con.write('/system/resource/print', (ch) => {
-        //_con.closeOnDone = true;
         ch.once('done', (p) => {
+            adapter.log.debug('ch1 done: ' + JSON.stringify(p));
             let d = MikroNode.parseItems(p);
             states.systeminfo = d[0];
             adapter.log.debug('/system/resource/print' + JSON.stringify(d));
@@ -200,13 +200,14 @@ function ch1(cb){
                 });
         }
     });
-    //} else cb();
 }
 
 function ch2(cb){
+    adapter.log.debug('ch2 send command');
     if (adapter.config.ch2){
         _con.write('/ip/firewall/nat/print', (ch) => {
             ch.once('done', (p) => {
+                adapter.log.debug('ch2 done: ' + JSON.stringify(p));
                 let d = MikroNode.parseItems(p);
                 ParseNat(d);
                 adapter.log.debug('/ip/firewall/nat/print' + JSON.stringify(d));
@@ -220,9 +221,11 @@ function ch2(cb){
 }
 
 function ch3(cb){
+    adapter.log.debug('ch3 send command');
     if (adapter.config.ch3){
         _con.write('/ip/dhcp-server/lease/print', (ch) => {
             ch.once('done', (p) => {
+                adapter.log.debug('ch3 done: ' + JSON.stringify(p));
                 let d = MikroNode.parseItems(p);
                 ParseDHCP(d);
                 adapter.log.debug('/ip/dhcp-server/lease/print' + JSON.stringify(d));
@@ -237,9 +240,11 @@ function ch3(cb){
 }
 
 function ch4(cb){
+    adapter.log.debug('ch4 send command');
     if (adapter.config.ch4){
         _con.write('/interface/print', (ch) => {
             ch.once('done', (p) => {
+                adapter.log.debug('ch4 done: ' + JSON.stringify(p));
                 let d = MikroNode.parseItems(p);
                 ParseInterface(d);
                 adapter.log.debug('/interface/print' + JSON.stringify(d));
@@ -253,9 +258,11 @@ function ch4(cb){
 }
 
 function ch5(cb){
+    adapter.log.debug('ch5 send command');
     if (adapter.config.ch5){
         _con.write('/ip/firewall/filter/print', (ch) => {
             ch.once('done', (p) => {
+                adapter.log.debug('ch5 done: ' + JSON.stringify(p));
                 let d = MikroNode.parseItems(p);
                 ParseFilter(d);
                 adapter.log.debug('/ip/firewall/filter/print' + JSON.stringify(d));
@@ -269,10 +276,12 @@ function ch5(cb){
 }
 
 function ch6(cb){
+    adapter.log.debug('ch6 send command');
     if (adapter.config.ch6){
         if (iswlan){
             _con.write('/interface/wireless/registration-table/print', (ch) => {
                 ch.once('done', (p) => {
+                    adapter.log.debug('ch6 done: ' + JSON.stringify(p));
                     let d = MikroNode.parseItems(p);
                     ParseWiFi(d);
                     adapter.log.debug('/interface/wireless/registration-table/print' + JSON.stringify(d));
@@ -290,9 +299,11 @@ function ch6(cb){
 }
 
 function ch7(cb){
+    adapter.log.debug('ch7 send command');
     if (adapter.config.ch7){
         _con.write('/ip/address/print', (ch) => {
             ch.once('done', (p) => {
+                adapter.log.debug('ch7 done: ' + JSON.stringify(p));
                 let d = MikroNode.parseItems(p);
                 ParseWAN(d);
                 adapter.log.debug('/ip/address/print' + JSON.stringify(d));
@@ -306,9 +317,11 @@ function ch7(cb){
 }
 
 function ch8(cb){
+    adapter.log.debug('ch8 send command');
     if (adapter.config.ch8){
         _con.write('/ip/firewall/address-list/print', (ch) => {
             ch.once('done', (p) => {
+                adapter.log.debug('ch8 done: ' + JSON.stringify(p));
                 let d = MikroNode.parseItems(p);
                 ParseFirewallList(d);
                 adapter.log.debug('/ip/firewall/address-list/print' + JSON.stringify(d));
@@ -322,6 +335,7 @@ function ch8(cb){
 }
 
 function parse(){
+    adapter.log.debug('Start parse function');
     clearTimeout(_poll);
     _poll = setTimeout(() => {
         ch1(() => {
@@ -566,7 +580,7 @@ function SetStates(){
 function setObject(name, val){
     let type = 'string';
     let role = 'state';
-    adapter.log.debug('setObject ' + JSON.stringify(name));
+    //adapter.log.debug('setObject ' + JSON.stringify(name));
     adapter.getState(name, (err, state) => {
         if ((err || !state)){
             if (~name.indexOf('disabled') || ~name.indexOf('blocked')){
