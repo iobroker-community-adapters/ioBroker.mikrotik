@@ -152,7 +152,7 @@ function main(){
     if (con.host && con.port){
         let _connection = MikroNode.getConnection(con.host, con.login, con.password, {
             port:           con.port,
-            timeout:        adapter.config.timeout ? (adapter.config.timeout + (poll_time/1000)) : (10 + (poll_time / 1000)),
+            timeout:        adapter.config.timeout ? (adapter.config.timeout + (poll_time / 1000)) :(10 + (poll_time / 1000)),
             closeOnTimeout: false,
             closeOnDone:    false
         });
@@ -368,7 +368,12 @@ function ParseNat(d, cb){
                     "chain":         d[i]["chain"],
                     "comment":       d[i]["comment"],
                     "disabled":      d[i]["disabled"],
-                    "out-interface": d[i]["out-interface"],
+                    "out-interface": d[i]["out-interface"] ? d[i]["out-interface"] :'',
+                    "in-interface":  d[i]["in-interface"] ? d[i]["in-interface"] :'',
+                    "dst-port":      d[i]["dst-port"] ? d[i]["dst-port"] :'',
+                    "to-ports":      d[i]["to-ports"] ? d[i]["dto-ports"] :'',
+                    "protocol":      d[i]["protocol"] ? d[i]["protocol"] :'',
+                    "to-addresses":  d[i]["to-addresses"] ? d[i]["to-addresses"] :'',
                     "action":        d[i]["action"]
                 });
         }
@@ -489,7 +494,7 @@ function ParseDHCP(d, cb){
                 {
                     "ip":   d[i]["address"],
                     "mac":  d[i]["mac-address"],
-                    "name": d[i]["host-name"] ? d[i]["host-name"] : d[i]["comment"]
+                    "name": d[i]["host-name"] ? d[i]["host-name"] :d[i]["comment"]
                 });
         }
     });
@@ -577,11 +582,12 @@ function SetStates(){
     parse();
 }
 
+
 function setObject(name, val){
     let type = 'string';
     let role = 'state';
     //adapter.log.debug('setObject ' + JSON.stringify(name));
-    adapter.getState(name, (err, state) => {
+    adapter.getObject(name, (err, state) => {
         if ((err || !state)){
             if (~name.indexOf('disabled') || ~name.indexOf('blocked')){
                 type = 'boolean';
@@ -598,8 +604,20 @@ function setObject(name, val){
                 },
                 native: {}
             });
+            adapter.extendObject(name, {common: {name: name, type: 'state', icon: icon}});
             adapter.setState(name, {val: val, ack: true});
         } else {
+            const st = name.slice(name.lastIndexOf('.') + 1);
+            if (st === 'comment'){
+                let obj = name.slice(0, name.lastIndexOf('.'));
+                adapter.getObject(obj, (err, state) => {
+                    if (!err || state){
+                        if (state.common.name !== val){
+                            adapter.extendObject(name.slice(0, name.lastIndexOf('.')), {common: {name: val, type: 'state'}});
+                        }
+                    }
+                });
+            }
             adapter.setState(name, {val: val, ack: true});
         }
     });
