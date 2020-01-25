@@ -194,10 +194,9 @@ function ch1(cb){
         });
         if (!flag){
             flag = true;
-            ch.on(
-                'error', (e) => {
-                    adapter.log.debug('Oops error: ' + e);
-                });
+            ch.on('error', (e) => {
+                adapter.log.debug('Oops error: ' + e);
+            });
         }
     });
 }
@@ -231,7 +230,6 @@ function ch3(cb){
                 adapter.log.debug('/ip/dhcp-server/lease/print' + JSON.stringify(d));
                 cb && cb();
             });
-
             /*ch.once('error', function(e, chan) {
                 err(e, true);
             });*/
@@ -379,7 +377,7 @@ function ParseNat(d, cb){
         }
     });
     states.nat = res;
-    //cb();
+    cb && cb();
 }
 
 function ParseFilter(d, cb){
@@ -395,7 +393,7 @@ function ParseFilter(d, cb){
         }
     });
     states.filter = res;
-    //cb();
+    cb && cb();
 }
 
 function formatSize(d){
@@ -433,7 +431,7 @@ function ParseInterface(d, cb){
         }
     });
     states.interface = res;
-    //cb();
+    cb && cb();
 }
 
 function ParseWiFi(d, cb){
@@ -462,7 +460,7 @@ function ParseWiFi(d, cb){
         });
     });
     states.wireless = res;
-    //cb();
+    cb && cb();
 }
 
 function ParseDHCP(d, cb){
@@ -499,7 +497,7 @@ function ParseDHCP(d, cb){
         }
     });
     states.dhcp = res;
-    //cb();
+    cb && cb();
 }
 
 function ParseWAN(d, cb){
@@ -511,7 +509,7 @@ function ParseWAN(d, cb){
             }
         }
     });
-    //cb();
+    cb && cb();
 }
 
 function ParseFirewallList(d, cb){
@@ -535,7 +533,7 @@ function ParseFirewallList(d, cb){
         });
     });
     states.firewall = res;
-    //cb();
+    cb && cb();
 }
 
 function SetStates(){
@@ -586,6 +584,8 @@ function SetStates(){
 function setObject(name, val){
     let type = 'string';
     let role = 'state';
+    const _name = name.slice(name.lastIndexOf('.') + 1);
+    const obj = name.slice(0, name.lastIndexOf('.'));
     //adapter.log.debug('setObject ' + JSON.stringify(name));
     adapter.getObject(name, (err, state) => {
         if ((err || !state)){
@@ -594,33 +594,42 @@ function setObject(name, val){
             } else {
                 role = 'indicator';
             }
-            adapter.setObject(name, {
-                type:   'state',
-                common: {
-                    name: name,
-                    desc: name,
-                    type: type,
-                    role: role
-                },
+            adapter.setObjectNotExists(obj, {
+                type:   'channel',
+                common: {name: '', type: 'state'},
                 native: {}
-            });
-            adapter.extendObject(name, {common: {name: name, type: 'state', icon: icon}});
-            adapter.setState(name, {val: val, ack: true});
-        } else {
-            const st = name.slice(name.lastIndexOf('.') + 1);
-            if (st === 'comment'){
-                let obj = name.slice(0, name.lastIndexOf('.'));
-                adapter.getObject(obj, (err, state) => {
-                    if (!err || state){
-                        if (state.common.name !== val){
-                            adapter.extendObject(name.slice(0, name.lastIndexOf('.')), {common: {name: val, type: 'state'}});
-                        }
-                    }
+            }, () => {
+                adapter.setObject(name, {
+                    type:   'state',
+                    common: {
+                        name: _name,
+                        desc: _name,
+                        type: type,
+                        role: role
+                    },
+                    native: {}
+                }, () => {
+                    updateChannel(obj, _name, val);
+                    adapter.setState(name, {val: val, ack: true});
                 });
-            }
+            });
+        } else {
+            updateChannel(obj, _name, val);
             adapter.setState(name, {val: val, ack: true});
         }
     });
+}
+
+function updateChannel(obj, name, val){
+    if (name === 'comment'){
+        adapter.getObject(obj, (err, state) => {
+            if (!err && state !== null){
+                if (state.common && (state.common.name !== val)){
+                    adapter.extendObject(obj, {common: {name: val, type: 'state'}});
+                }
+            }
+        });
+    }
 }
 
 function getNameWiFi(mac, cb){
