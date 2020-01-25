@@ -48,7 +48,7 @@ function startAdapter(options){
         unload:       (callback) => {
             clearTimeout(_poll);
             clearTimeout(timer);
-            if (connection){
+            if (connection && _con){
                 _con.clearEvents = true;
                 connection.close();
             }
