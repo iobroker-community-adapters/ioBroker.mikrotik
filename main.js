@@ -605,7 +605,9 @@ function setObject(name, val){
                         name: _name,
                         desc: _name,
                         type: type,
-                        role: role
+                        role: role,
+                        read: true,
+                        write: true
                     },
                     native: {}
                 }, () => {
