@@ -584,6 +584,7 @@ function SetStates(){
 function setObject(name, val){
     let type = 'string';
     let role = 'state';
+    let write = false;
     const _name = name.slice(name.lastIndexOf('.') + 1);
     const obj = name.slice(0, name.lastIndexOf('.'));
     //adapter.log.debug('setObject ' + JSON.stringify(name));
@@ -591,6 +592,7 @@ function setObject(name, val){
         if ((err || !state)){
             if (~name.indexOf('disabled') || ~name.indexOf('blocked')){
                 type = 'boolean';
+                write = true;
             } else {
                 role = 'indicator';
             }
@@ -607,7 +609,7 @@ function setObject(name, val){
                         type: type,
                         role: role,
                         read: true,
-                        write: true
+                        write: write
                     },
                     native: {}
                 }, () => {
