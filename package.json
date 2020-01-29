@@ -20,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/instalator/iobroker.mikrotik"
+    "url": "https://github.com/instalator/ioBroker.mikrotik.git"
   },
   "dependencies": {
     "mikronode-ng": "https://github.com/homeinstalator/mikronode-ng/archive/v1.0.11.tar.gz",
