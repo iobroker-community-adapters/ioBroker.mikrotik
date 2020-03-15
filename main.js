@@ -554,6 +554,7 @@ function SetStates(){
                                 ids = key + '.' + states[key][i]['name'] + '.' + k;
                             }
                         } else {
+                            adapter.log.debug('SetStates: ' + JSON.stringify(states[key][i]));
                             ids = key + '.id' + states[key][i]['id'].replace('*', '_') + '.' + k;
                         }
                         setObject(ids, states[key][i][k]);
