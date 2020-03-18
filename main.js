@@ -364,7 +364,7 @@ function ParseNat(d, cb){
                 {
                     "id":            d[i][".id"],
                     "chain":         d[i]["chain"],
-                    "comment":       d[i]["comment"] ? d[i]["comment"] : ' ',
+                    "comment":       d[i]["comment"] ? d[i]["comment"] : '',
                     "disabled":      d[i]["disabled"],
                     "out-interface": d[i]["out-interface"] ? d[i]["out-interface"] :'',
                     "in-interface":  d[i]["in-interface"] ? d[i]["in-interface"] :'',
@@ -387,7 +387,7 @@ function ParseFilter(d, cb){
             res.push({
                 "id":       d[i][".id"],
                 "chain":    d[i]["chain"],
-                "comment":  d[i]["comment"] ? d[i]["comment"] : ' ',
+                "comment":  d[i]["comment"] ? d[i]["comment"] :'',
                 "disabled": d[i]["disabled"]
             });
         }
@@ -475,6 +475,7 @@ function ParseDHCP(d, cb){
                 d[i]["host-name"] = d[i]["mac-address"].replace(/[:]+/g, '');
             }
         }
+        if(d[i][".id"]){
         res.push(
             {
                 "name":        d[i]["host-name"] ? d[i]["host-name"] :d[i]["comment"],
@@ -483,7 +484,7 @@ function ParseDHCP(d, cb){
                 "mac-address": d[i]["mac-address"],
                 "server":      d[i]["server"],
                 "status":      d[i]["status"],
-                "comment":     d[i]["comment"] ? d[i]["comment"] :' ',
+                "comment":     d[i]["comment"] ? d[i]["comment"] :'',
                 "blocked":     d[i]["blocked"]
             });
         //}
@@ -495,6 +496,7 @@ function ParseDHCP(d, cb){
                     "name": d[i]["host-name"] ? d[i]["host-name"] :d[i]["comment"]
                 });
         }
+    }
     });
     states.dhcp = res;
     cb && cb();
@@ -524,7 +526,7 @@ function ParseFirewallList(d, cb){
                 "id":       d[i][".id"],
                 "name":     d[i]["list"] + d[i][".id"].replace('*', '_'),
                 "disabled": d[i]["disabled"],
-                "comment":  d[i]["comment"] ? d[i]["comment"] : ' '
+                "comment":  d[i]["comment"] ? d[i]["comment"] : ''
             });
         }
         states.lists.firewall_list.push({
