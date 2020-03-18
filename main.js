@@ -475,7 +475,7 @@ function ParseDHCP(d, cb){
                 d[i]["host-name"] = d[i]["mac-address"].replace(/[:]+/g, '');
             }
         }
-        if(d[i][".id"]){
+        if(d[i][".id"] !== undefined){
         res.push(
             {
                 "name":        d[i]["host-name"] ? d[i]["host-name"] :d[i]["comment"],
