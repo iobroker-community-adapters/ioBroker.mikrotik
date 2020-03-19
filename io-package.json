@@ -1,8 +1,16 @@
 {
   "common": {
     "name": "mikrotik",
-    "version": "1.0.10",
+    "version": "1.0.11",
     "news": {
+      "1.0.11": {
+        "en": "TypeError: Cannot read property 'replace' of undefined",
+        "de": "TypeError: Cannot read property 'replace' of undefined",
+        "ru": "TypeError: Cannot read property 'replace' of undefined",
+        "pt": "TypeError: Cannot read property 'replace' of undefined",
+        "fr": "TypeError: Cannot read property 'replace' of undefined",
+        "nl": "TypeError: Cannot read property 'replace' of undefined"
+      },
       "1.0.10": {
         "en": "added name objects\nfix error",
         "de": "added name objects\nfix error",
