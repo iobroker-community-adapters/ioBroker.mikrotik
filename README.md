@@ -9,6 +9,8 @@ ioBroker MikroTik Router adapter
 
 [![NPM](https://nodei.co/npm/iobroker.mikrotik.png?downloads=true)](https://nodei.co/npm/iobroker.mikrotik/)
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
+
 ## Using
 ### add_firewall
 Add address to firewall list and enable.  
