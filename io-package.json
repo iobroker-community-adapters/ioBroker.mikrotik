@@ -1,8 +1,16 @@
 {
   "common": {
     "name": "mikrotik",
-    "version": "1.0.11",
+    "version": "1.0.12",
     "news": {
+      "1.0.12": {
+        "en": "fixed error symb",
+        "de": "fixed error symb",
+        "ru": "fixed error symb",
+        "pt": "fixed error symb",
+        "fr": "fixed error symb",
+        "nl": "fixed error symb"
+      },
       "1.0.11": {
         "en": "TypeError: Cannot read property 'replace' of undefined",
         "de": "TypeError: Cannot read property 'replace' of undefined",
@@ -18,118 +26,6 @@
         "pt": "added name objects\nfix error",
         "fr": "added name objects\nfix error",
         "nl": "added name objects\nfix error"
-      },
-      "1.0.6": {
-        "en": "added in interface RX/TX (packets)\nAdded Support for Compact mode\nRefactoring",
-        "de": "added in interface RX/TX (packets)\nAdded Support for Compact mode\nRefactoring",
-        "ru": "added in interface RX/TX (packets)\nAdded Support for Compact mode\nRefactoring",
-        "pt": "added in interface RX/TX (packets)\nAdded Support for Compact mode\nRefactoring",
-        "fr": "added in interface RX/TX (packets)\nAdded Support for Compact mode\nRefactoring",
-        "nl": "added in interface RX/TX (packets)\nAdded Support for Compact mode\nRefactoring"
-      },
-      "1.0.5": {
-        "en": "Update Login Protocol",
-        "de": "Update Login Protocol",
-        "ru": "Update Login Protocol",
-        "pt": "Update Login Protocol",
-        "fr": "Update Login Protocol",
-        "nl": "Update Login Protocol"
-      },
-      "1.0.4": {
-        "en": "fix add_firewall command",
-        "de": "fix add_firewall command",
-        "ru": "fix add_firewall command",
-        "pt": "fix add_firewall command",
-        "fr": "fix add_firewall command",
-        "nl": "fix add_firewall command"
-      },
-      "1.0.3": {
-        "en": "added checkboxes - receive the following data",
-        "de": "added checkboxes - receive the following data",
-        "ru": "added checkboxes - receive the following data",
-        "pt": "added checkboxes - receive the following data",
-        "fr": "added checkboxes - receive the following data",
-        "nl": "added checkboxes - receive the following data"
-      },
-      "1.0.2": {
-        "en": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
-        "de": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
-        "ru": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
-        "pt": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
-        "fr": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling",
-        "nl": "added support for the Admin 3\nfixed some bugs\nadded in settings time polling"
-      },
-      "1.0.1": {
-        "en": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
-        "de": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
-        "ru": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
-        "pt": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
-        "fr": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'",
-        "nl": "Change in objects symbol '*' to '_', see issues#10\nfix issues#9\nadd to settings Timeout get\nadd firewall list, see issues#7 and command 'add_firewall'"
-      },
-      "1.0.0": {
-        "en": "up to stable",
-        "de": "up to stable",
-        "ru": "up to stable",
-        "pt": "up to stable",
-        "fr": "up to stable",
-        "nl": "up to stable"
-      },
-      "0.0.20": {
-        "en": "add mask for password in settings dialog\nadded info error login or password",
-        "de": "add mask for password in settings dialog\nadded info error login or password",
-        "ru": "add mask for password in settings dialog\nadded info error login or password",
-        "pt": "add mask for password in settings dialog\nadded info error login or password",
-        "fr": "add mask for password in settings dialog\nadded info error login or password",
-        "nl": "add mask for password in settings dialog\nadded info error login or password"
-      },
-      "0.0.12": {
-        "en": "change logic connect",
-        "de": "change logic connect",
-        "ru": "change logic connect",
-        "pt": "change logic connect",
-        "fr": "change logic connect",
-        "nl": "change logic connect"
-      },
-      "0.0.11": {
-        "en": "added WAN address to systeminfo",
-        "de": "added WAN address to systeminfo",
-        "ru": "added WAN address to systeminfo",
-        "pt": "added WAN address to systeminfo",
-        "fr": "added WAN address to systeminfo",
-        "nl": "added WAN address to systeminfo"
-      },
-      "0.0.10": {
-        "en": "fix error\nchange logo",
-        "de": "fix error\nchange logo",
-        "ru": "fix error\nchange logo",
-        "pt": "fix error\nchange logo",
-        "fr": "fix error\nchange logo",
-        "nl": "fix error\nchange logo"
-      },
-      "0.0.4": {
-        "en": "added commands usb power reset\nfix error",
-        "de": "added commands usb power reset\nfix error",
-        "ru": "added commands usb power reset\nfix error",
-        "pt": "added commands usb power reset\nfix error",
-        "fr": "added commands usb power reset\nfix error",
-        "nl": "added commands usb power reset\nfix error"
-      },
-      "0.0.2": {
-        "en": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client",
-        "de": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client",
-        "ru": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client",
-        "pt": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client",
-        "fr": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client",
-        "nl": "added command 'disbled ' for: filter, interface, filter nat.\nfix error\nadded list dhcp and wifi client"
-      },
-      "0.0.1": {
-        "en": "initial adapter",
-        "de": "Initiale Version",
-        "ru": "Первоначальный адаптер",
-        "pt": "Versão inicial",
-        "fr": "Version initiale",
-        "nl": "Eerste release"
       }
     },
     "title": "MikroTik Router",

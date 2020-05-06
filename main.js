@@ -405,6 +405,7 @@ function formatSize(d){
     return parseInt(d).toFixed(2) + ' ' + type[i];
 }
 
+
 function ParseInterface(d, cb){
     let res = [];
     d.forEach((item, i) => {
