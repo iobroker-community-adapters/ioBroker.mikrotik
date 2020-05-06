@@ -410,7 +410,7 @@ function ParseInterface(d, cb){
     d.forEach((item, i) => {
         if (d[i]["name"] !== undefined){
             res.push({
-                "name":            d[i]["name"],
+                "name":            d[i]["name"].replace('*', '_').replace('<', '').replace('>', ''),
                 "id":              d[i][".id"],
                 "type":            d[i]["type"],
                 "disabled":        d[i]["disabled"],
@@ -524,7 +524,7 @@ function ParseFirewallList(d, cb){
             res.push({
                 "address":  d[i]["address"],
                 "id":       d[i][".id"],
-                "name":     d[i]["list"] + d[i][".id"].replace('*', '_'),
+                "name":     d[i]["list"] + d[i][".id"].replace('*', '_').replace('<', '').replace('>', ''),
                 "disabled": d[i]["disabled"],
                 "comment":  d[i]["comment"] ? d[i]["comment"] : ''
             });
@@ -543,7 +543,7 @@ function SetStates(){
         if (states[key].length !== undefined && key !== 'lists'){
             states[key].forEach((item, i) => {
                 Object.keys(states[key][i]).forEach((k) => {
-                    if (old_states[key][i] == undefined){
+                    if (old_states[key][i] === undefined){
                         old_states[key].push({});
                     }
                     if (states[key][i][k] !== old_states[key][i][k]){
@@ -551,9 +551,9 @@ function SetStates(){
                         let ids = '';
                         if (states[key][i]['name'] !== undefined){
                             if (states[key][i]['server'] !== undefined){
-                                ids = key + '.' + states[key][i]['server'] + '.' + states[key][i]['name'] + '.' + k;
+                                ids = key + '.' + states[key][i]['server'] + '.' + states[key][i]['name'].replace('*', '_').replace('<', '').replace('>', '') + '.' + k;
                             } else {
-                                ids = key + '.' + states[key][i]['name'] + '.' + k;
+                                ids = key + '.' + states[key][i]['name'].replace('*', '_').replace('<', '').replace('>', '') + '.' + k;
                             }
                         } else {
                             adapter.log.debug('SetStates obj: ' + JSON.stringify(states[key]));
