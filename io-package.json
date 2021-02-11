@@ -1,9 +1,20 @@
 {
   "common": {
     "name": "mikrotik",
-    "version": "1.0.12",
+    "version": "1.0.13",
     "news": {
-      "1.0.12": {
+      "1.0.13": {
+        "en": "changed parsing RAW command\nadded last-link-up-time and last-link-down-time to interface",
+        "de": "geänderter Parsing-RAW-Befehl\nLast-Link-Up-Time und Last-Link-Down-Time zur Schnittstelle hinzugefügt",
+        "ru": "изменена команда синтаксического анализа RAW\nдобавлено время последней связи и время отключения последней ссылки в интерфейс",
+        "pt": "foi alterado o comando RAW de análise\nadicionado o tempo do último link para cima e o tempo do último link para baixo para a interface",
+        "nl": "gewijzigde parsing RAW-opdracht\nlaatste-link-up-time en last-link-down-time toegevoegd aan interface",
+        "fr": "Modification de la commande d'analyse RAW\najout de l'heure de dernière liaison et de dernière interruption de liaison à l'interface",
+        "it": "modificato il comando RAW di analisi\naggiunto il tempo di attività dell'ultimo collegamento e il tempo di inattività dell'ultimo collegamento all'interfaccia",
+        "es": "se modificó el comando RAW de análisis sintáctico\nse agregó el tiempo de activación del último enlace y el tiempo de desactivación del último enlace a la interfaz",
+        "pl": "zmieniono polecenie parsowania RAW\ndodano czas ostatniego łącza do interfejsu i czas wyłączenia ostatniego łącza do interfejsu",
+        "zh-cn": "更改了解析RAW命令\n为接口添加了上次链接时间和上次链接时间"
+      },"1.0.12": {
         "en": "fixed error symb",
         "de": "fixed error symb",
         "ru": "fixed error symb",

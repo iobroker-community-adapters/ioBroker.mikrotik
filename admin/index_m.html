@@ -1,20 +1,15 @@
 <html>
-
 <head>
-    <!-- these 4 files always have to be included -->
     <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
-    <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
-
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
     <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
-
-    <!-- these files always have to be included -->
     <script type="text/javascript" src="../../js/translate.js"></script>
     <script type="text/javascript" src="../../lib/js/materialize.js"></script>
     <script type="text/javascript" src="../../js/adapter-settings.js"></script>
     <script type="text/javascript" src="words.js"></script>
     <style>
-        .m .col .select-wrapper+label {
+        .m .col .select-wrapper + label {
             top: -26px;
         }
 
@@ -26,43 +21,34 @@
             padding: .5rem;
             width: 150px;
         }
-
     </style>
-    <!-- you have to define 2 functions in the global scope: -->
     <script type="text/javascript">
-        // the function loadSettings has to exist ...
-        function load(settings, onChange) {
-            // example: select elements with id=key and class=value and insert value
+        function load(settings, onChange){
             if (!settings) return;
-            $('.value').each(function() {
+            $('.value').each(function (){
                 var $key = $(this);
                 var id = $key.attr('id');
-                if ($key.attr('type') === 'checkbox') {
-                    // do not call onChange direct, because onChange could expect some arguments
-                    $key.prop('checked', settings[id]).change(function() {
+                if ($key.attr('type') === 'checkbox'){
+                    $key.prop('checked', settings[id]).change(function (){
                         onChange();
                     });
                 } else {
-                    // do not call onChange direct, because onChange could expect some arguments
-                    $key.val(settings[id]).change(function() {
+                    $key.val(settings[id]).change(function (){
                         onChange();
-                    }).keyup(function() {
+                    }).keyup(function (){
                         onChange();
                     });
                 }
             });
             onChange(false);
-            M.updateTextFields(); // function Materialize.updateTextFields(); to reinitialize all the Materialize labels on the page if you are dynamically adding inputs.
+            M.updateTextFields();
         }
 
-        // ... and the function save has to exist.
-        // you have to make sure the callback is called with the settings object as first param!
-        function save(callback) {
-            // example: select elements with class=value and build settings object
+        function save(callback){
             var obj = {};
-            $('.value').each(function() {
+            $('.value').each(function (){
                 var $this = $(this);
-                if ($this.attr('type') === 'checkbox') {
+                if ($this.attr('type') === 'checkbox'){
                     obj[$this.attr('id')] = $this.prop('checked');
                 } else {
                     obj[$this.attr('id')] = $this.val();
@@ -70,106 +56,137 @@
             });
             callback(obj);
         }
-
     </script>
+    <script>
+        $(function (){
+            $(".adapter-body").append("" +
+                "<div class=\"m row\" style='display:block;position:absolute;bottom:130px;right:0;'>" +
+                "<div class=\"col right\">" +
+                "<div class=\"col\" style=\"margin-top:10px;float:right;margin-right:20px;\">" +
+                "<a target=\"_blank\" href=\"https://sobe.ru/na/instalator\"><img style=\"float:right;\" src=\"https://img.shields.io/badge/Donate-YooMoney-green\" alt=\"\"></a>" +
+                "<a target=\"_blank\" href=\"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY\"><img style=\"float:right;padding-right:10px;\" src=\"https://img.shields.io/badge/Donate-PayPal-green.svg\" alt=\"\"></a>" +
+                "</div></div></div>");
+        });
+    </script>
+    <style>
+        .adapter-body {
+            display: block;
+        }
+
+        .m .input-field > label {
+            color: #5a5a5a;
+        }
+
+        .adapter-body::after {
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            content: "";
+            background: url(background.jpg);
+            background-position: top;
+            background-repeat: no-repeat;
+            background-size: cover;
+            opacity: 0.2;
+            position: absolute;
+            z-index: -1;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- you have to put your config page in a div with id adapter-container -->
-    <div class="m adapter-container">
+<div class="m adapter-container">
+    <div class="row">
         <div class="row">
-            <!-- Forms are the standard way to receive user inputted data.
-         Learn more http://materializecss.com/forms.html-->
-            <div class="row">
-                <div class="input-field col s6">
-                    <img src="mikrotik_admin.png" class="logo">
-                </div>
+            <div class="input-field col s6">
+                <img src="mikrotik_admin.png" class="logo">
             </div>
-            <div class="row">
-                <div class="input-field col s12 m6 l4">
-                    <input class="value" id="host" type="text">
-                    <label for="host" class="translate">host</label>
-                </div>
-                <div class="input-field col s12 m6 l4">
-                    <input type="number" class="value" id="port" />
-                    <label for="port" class="translate">port</label>
-                    <span class="translate">def</span>
-                </div>
-                <div class="input-field col s12 m6 l4">
-                    <input type="number" class="value" id="timeout" />
-                    <label for="timeout" class="translate">timeout</label>
-                    <span class="translate">sec</span>
-                </div>
-                <div class="input-field col s12 m6 l4">
-                    <input type="number" class="value" id="poll" />
-                    <label for="poll" class="translate">poll</label>
-                    <span class="translate">ms</span>
-                </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 m6 l4">
+                <input class="value" id="host" type="text">
+                <label for="host" class="translate">host</label>
             </div>
-            <div class="row">
-                <div class="input-field col s12 m6 l4">
-                    <input type="text" class="value" id="login">
-                    <label for="login" class="translate">login</label>
-                </div>
-                <div class="input-field col s12 m6 l4">
-                    <input type="password" class="value" id="password">
-                    <label for="password" class="translate">password</label>
-                </div>
+            <div class="input-field col s12 m6 l4">
+                <input type="number" class="value" id="port"/>
+                <label for="port" class="translate">port</label>
+                <span class="translate">def</span>
             </div>
-            <div class="row">
-                <div class="col s12 m3">
-                    <span class="translate" for="following">following</span>
-                </div>
+            <div class="input-field col s12 m6 l4">
+                <input type="number" class="value" id="timeout"/>
+                <label for="timeout" class="translate">timeout</label>
+                <span class="translate">sec</span>
             </div>
-            <div class="row">
-                <div class="col s12 m3">
-                    <input type="checkbox" class="value" id="ch2"/>
-                    <span class="translate" for="ch2">ch2</span>
-                </div>
+            <div class="input-field col s12 m6 l4">
+                <input type="number" class="value" id="poll"/>
+                <label for="poll" class="translate">poll</label>
+                <span class="translate">ms</span>
             </div>
-            <div class="row">
-                <div class="col s12 m3">
-                    <input type="checkbox" class="value" id="ch3"/>
-                    <span class="translate" for="ch3">ch3</span>
-                </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 m6 l4">
+                <input type="text" class="value" id="login">
+                <label for="login" class="translate">login</label>
             </div>
-            <div class="row">
-                <div class="col s12 m3">
-                    <input type="checkbox" class="value" id="ch4"/>
-                    <span class="translate" for="ch4">ch4</span>
-                </div>
+            <div class="input-field col s12 m6 l4">
+                <input type="password" class="value" id="password">
+                <label for="password" class="translate">password</label>
             </div>
-            <div class="row">
-                <div class="col s12 m3">
-                    <input type="checkbox" class="value" id="ch5"/>
-                    <span class="translate" for="ch5">ch5</span>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m3">
+                <span class="translate" for="following">following</span>
             </div>
-            <div class="row">
-                <div class="col s12 m3">
-                    <input type="checkbox" class="value" id="ch6"/>
-                    <span class="translate" for="ch6">ch6</span>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m3">
+                <input type="checkbox" class="value" id="ch2"/>
+                <span class="translate" for="ch2">ch2</span>
             </div>
-            <div class="row">
-                <div class="col s12 m3">
-                    <input type="checkbox" class="value" id="ch7"/>
-                    <span class="translate" for="ch7">ch7</span>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m3">
+                <input type="checkbox" class="value" id="ch3"/>
+                <span class="translate" for="ch3">ch3</span>
             </div>
-            <div class="row">
-                <div class="col s12 m3">
-                    <input type="checkbox" class="value" id="ch8"/>
-                    <span class="translate" for="ch8">ch8</span>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m3">
+                <input type="checkbox" class="value" id="ch4"/>
+                <span class="translate" for="ch4">ch4</span>
             </div>
-            <div class="row">
-                <div class="col s12">
-                    <p class="translate">on save adapter restarts with new config immediately</p>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m3">
+                <input type="checkbox" class="value" id="ch5"/>
+                <span class="translate" for="ch5">ch5</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m3">
+                <input type="checkbox" class="value" id="ch6"/>
+                <span class="translate" for="ch6">ch6</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m3">
+                <input type="checkbox" class="value" id="ch7"/>
+                <span class="translate" for="ch7">ch7</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12 m3">
+                <input type="checkbox" class="value" id="ch8"/>
+                <span class="translate" for="ch8">ch8</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s12">
+                <p class="translate">on save adapter restarts with new config immediately</p>
             </div>
         </div>
     </div>
+</div>
 </body>
 
 </html>

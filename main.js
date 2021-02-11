@@ -3,22 +3,8 @@ const utils = require('@iobroker/adapter-core');
 let adapter;
 const MikroNode = require('mikronode-ng');
 let _poll, poll_time, connect = false, timer, iswlan = false;
-let con, _con, connection;
+let con, _con, connection, old_states, flagOnError = false;
 let states = {
-    "wireless":   [],
-    "dhcp":       [],
-    "interface":  [],
-    "filter":     [],
-    "nat":        [],
-    "firewall":   [],
-    "lists":      {
-        "dhcp_list":     [],
-        "wifi_list":     [],
-        "firewall_list": []
-    },
-    "systeminfo": {}
-};
-let old_states = {
     "wireless":   [],
     "dhcp":       [],
     "interface":  [],
@@ -77,6 +63,12 @@ function startAdapter(options){
                     }
                 }
                 if (cmd === 'raw'){
+                    if (!~val.indexOf('\u000A')){
+                        val = val.replace(/\s/g, '\u000A=');
+                    }
+                    if (val[0] !== '/'){
+                        val = '/' + val;
+                    }
                     cmdlist = val.split(",");
                     SetCommand(cmdlist);
                 }
@@ -130,18 +122,22 @@ function SetCommand(set){
     _con.write(set, (ch) => {
         ch.once('done', (p) => {
             let d = MikroNode.parseItems(p);
-            adapter.log.info('SetCommand response: ' + JSON.stringify(d));
+            adapter.log.info('SetCommand Done response: ' + JSON.stringify(d));
             adapter.setState('commands.response', JSON.stringify(d), true);
         });
-        ch.on('error', (err, chan) => {
-            err(err);
+        ch.on('trap', (e, chan) => {
+            adapter.log.debug('commands Trap response ' + e && e.errors[0]);
+            adapter.setState('commands.response', e && e.errors[0].message, true);
+        });
+        ch.on('error', (e, chan) => {
+            err(e);
         });
     });
 }
 
-
 function main(){
     adapter.subscribeStates('*');
+    old_states = JSON.parse(JSON.stringify(states));
     poll_time = adapter.config.poll ? adapter.config.poll :5000;
     con = {
         "host":     adapter.config.host ? adapter.config.host :"192.168.1.11",
@@ -180,8 +176,6 @@ function main(){
     }
 }
 
-let flag = false;
-
 function ch1(cb){
     adapter.log.debug('ch1 send command');
     _con.write('/system/resource/print', (ch) => {
@@ -192,8 +186,8 @@ function ch1(cb){
             adapter.log.debug('/system/resource/print' + JSON.stringify(d));
             cb && cb();
         });
-        if (!flag){
-            flag = true;
+        if (!flagOnError){
+            flagOnError = true;
             ch.on('error', (e) => {
                 adapter.log.debug('Oops error: ' + e);
             });
@@ -364,7 +358,7 @@ function ParseNat(d, cb){
                 {
                     "id":            d[i][".id"],
                     "chain":         d[i]["chain"],
-                    "comment":       d[i]["comment"] ? d[i]["comment"] : '',
+                    "comment":       d[i]["comment"] ? d[i]["comment"] :'',
                     "disabled":      d[i]["disabled"],
                     "out-interface": d[i]["out-interface"] ? d[i]["out-interface"] :'',
                     "in-interface":  d[i]["in-interface"] ? d[i]["in-interface"] :'',
@@ -405,26 +399,27 @@ function formatSize(d){
     return parseInt(d).toFixed(2) + ' ' + type[i];
 }
 
-
 function ParseInterface(d, cb){
     let res = [];
     d.forEach((item, i) => {
         if (d[i]["name"] !== undefined){
             res.push({
-                "name":            d[i]["name"].replace('*', '_').replace('<', '').replace('>', ''),
-                "id":              d[i][".id"],
-                "type":            d[i]["type"],
-                "disabled":        d[i]["disabled"],
-                "mac-address":     d[i]["mac-address"],
-                "running":         d[i]["running"],
-                "total_rx_byte":   d[i]["rx-byte"],
-                "total_tx_byte":   d[i]["tx-byte"],
-                "rx":              (((parseInt(d[i]["rx-byte"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_rx_byte'] :d[i]["rx-byte"])) / (adapter.config.poll / 1000)) * 0.008).toFixed(2),
-                "tx":              (((parseInt(d[i]["tx-byte"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_tx_byte'] :d[i]["tx-byte"])) / (adapter.config.poll / 1000)) * 0.008).toFixed(2),
-                "total_rx_packet": d[i]["rx-packet"],
-                "total_tx_packet": d[i]["tx-packet"],
-                "rx_packet":       ((parseInt(d[i]["rx-packet"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_rx_packet'] :d[i]["rx-packet"])) / (adapter.config.poll / 1000)).toFixed(0),
-                "tx_packet":       ((parseInt(d[i]["tx-packet"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_tx_packet'] :d[i]["tx-packet"])) / (adapter.config.poll / 1000)).toFixed(0),
+                "name":                d[i]["name"].replace('*', '_').replace('<', '').replace('>', ''),
+                "id":                  d[i][".id"],
+                "type":                d[i]["type"],
+                "disabled":            d[i]["disabled"],
+                "mac-address":         d[i]["mac-address"],
+                "running":             d[i]["running"],
+                "total_rx_byte":       d[i]["rx-byte"],
+                "total_tx_byte":       d[i]["tx-byte"],
+                "last-link-up-time":   d[i]["last-link-up-time"] ? d[i]["last-link-up-time"] :'',
+                "last-link-down-time": d[i]["last-link-down-time"] ? d[i]["last-link-down-time"] :'',
+                "rx":                  (((parseInt(d[i]["rx-byte"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_rx_byte'] :d[i]["rx-byte"])) / (adapter.config.poll / 1000)) * 0.008).toFixed(2),
+                "tx":                  (((parseInt(d[i]["tx-byte"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_tx_byte'] :d[i]["tx-byte"])) / (adapter.config.poll / 1000)) * 0.008).toFixed(2),
+                "total_rx_packet":     d[i]["rx-packet"],
+                "total_tx_packet":     d[i]["tx-packet"],
+                "rx_packet":           ((parseInt(d[i]["rx-packet"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_rx_packet'] :d[i]["rx-packet"])) / (adapter.config.poll / 1000)).toFixed(0),
+                "tx_packet":           ((parseInt(d[i]["tx-packet"]) - parseInt(old_states.interface[i] ? old_states.interface[i]['total_tx_packet'] :d[i]["tx-packet"])) / (adapter.config.poll / 1000)).toFixed(0),
             });
         }
         if (d[i]["type"] === 'wlan'){
@@ -476,28 +471,28 @@ function ParseDHCP(d, cb){
                 d[i]["host-name"] = d[i]["mac-address"].replace(/[:]+/g, '');
             }
         }
-        if(d[i][".id"] !== undefined){
-        res.push(
-            {
-                "name":        d[i]["host-name"] ? d[i]["host-name"] :d[i]["comment"],
-                "id":          d[i][".id"],
-                "address":     d[i]["address"],
-                "mac-address": d[i]["mac-address"],
-                "server":      d[i]["server"],
-                "status":      d[i]["status"],
-                "comment":     d[i]["comment"] ? d[i]["comment"] :'',
-                "blocked":     d[i]["blocked"]
-            });
-        //}
-        if (d[i]["status"] !== 'waiting'){
-            states.lists.dhcp_list.push(
+        if (d[i][".id"] !== undefined){
+            res.push(
                 {
-                    "ip":   d[i]["address"],
-                    "mac":  d[i]["mac-address"],
-                    "name": d[i]["host-name"] ? d[i]["host-name"] :d[i]["comment"]
+                    "name":        d[i]["host-name"] ? d[i]["host-name"] :d[i]["comment"],
+                    "id":          d[i][".id"],
+                    "address":     d[i]["address"],
+                    "mac-address": d[i]["mac-address"],
+                    "server":      d[i]["server"],
+                    "status":      d[i]["status"],
+                    "comment":     d[i]["comment"] ? d[i]["comment"] :'',
+                    "blocked":     d[i]["blocked"]
                 });
+            //}
+            if (d[i]["status"] !== 'waiting'){
+                states.lists.dhcp_list.push(
+                    {
+                        "ip":   d[i]["address"],
+                        "mac":  d[i]["mac-address"],
+                        "name": d[i]["host-name"] ? d[i]["host-name"] :d[i]["comment"]
+                    });
+            }
         }
-    }
     });
     states.dhcp = res;
     cb && cb();
@@ -509,6 +504,7 @@ function ParseWAN(d, cb){
         if (d[i][".id"] !== undefined){
             if (d[i]["interface"] === d[i]["actual-interface"]){
                 states.systeminfo.wan = d[i]["address"];
+                states.systeminfo.wan_disabled = d[i]["disabled"];
             }
         }
     });
@@ -527,7 +523,7 @@ function ParseFirewallList(d, cb){
                 "id":       d[i][".id"],
                 "name":     d[i]["list"] + d[i][".id"].replace('*', '_').replace('<', '').replace('>', ''),
                 "disabled": d[i]["disabled"],
-                "comment":  d[i]["comment"] ? d[i]["comment"] : ''
+                "comment":  d[i]["comment"] ? d[i]["comment"] :''
             });
         }
         states.lists.firewall_list.push({
@@ -585,7 +581,6 @@ function SetStates(){
     parse();
 }
 
-
 function setObject(name, val){
     let type = 'string';
     let role = 'state';
@@ -609,11 +604,11 @@ function setObject(name, val){
                 adapter.setObject(name, {
                     type:   'state',
                     common: {
-                        name: _name,
-                        desc: _name,
-                        type: type,
-                        role: role,
-                        read: true,
+                        name:  _name,
+                        desc:  _name,
+                        type:  type,
+                        role:  role,
+                        read:  true,
                         write: write
                     },
                     native: {}
@@ -666,7 +661,7 @@ function err(e, er){
         }
         if (~e.indexOf('ECONNRESET') || ~e.indexOf('closed') || ~e.indexOf('ended') || ~e.indexOf('Timeout') && !er){
             connection.close();
-            flag = false;
+            flagOnError = false;
             clearTimeout(_poll);
             clearTimeout(timer);
             connect = false;

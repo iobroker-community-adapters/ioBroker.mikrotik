@@ -1,10 +1,10 @@
 *.class
 tasks/
+devfile/
 .idea
 .git
-build
 node_modules/
-temp.txt
+iob_npm.done
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
