@@ -62,6 +62,8 @@
     "readme": "https://github.com/instalator/iobroker.mikrotik/blob/master/README.md",
     "loglevel": "info",
     "type": "hardware",
+    "connectionType": "local",
+    "dataSource": "poll",
     "authors": [
       {
         "name": "instalator",
@@ -81,7 +83,8 @@
     "ch5": true,
     "ch6": true,
     "ch7": true,
-    "ch8": true
+    "ch8": false,
+    "ch9": false
   },
   "objects": [],
   "instanceObjects": [

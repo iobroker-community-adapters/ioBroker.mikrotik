@@ -18,6 +18,7 @@ systemDictionary = {
 	"ch6":                   	{"en": "wireless/registration-table", "de": "wireless/registration-table", "ru": "wireless/registration-table"},
 	"ch7":                   	{"en": "address", "de": "address", "ru": "address"},
 	"ch8":                   	{"en": "firewall/address-list", "de": "firewall/address-list", "ru": "firewall/address-list"},
+	"ch9":                   	{"en": "caps-man/registration-table", "de": "caps-man/registration-table", "ru": "caps-man/registration-table"},
 	"on save adapter restarts with new config immediately": {
 		"de": "Beim Speichern von Einstellungen der Adapter wird sofort neu gestartet.",
 		"ru": "Сразу после сохранения настроек драйвер перезапуститься с новыми значениями"

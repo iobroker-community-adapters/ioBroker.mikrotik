@@ -11,6 +11,7 @@ let states = {
     "filter":     [],
     "nat":        [],
     "firewall":   [],
+    "capsman":    [],
     "lists":      {
         "dhcp_list":     [],
         "wifi_list":     [],
@@ -196,8 +197,8 @@ function ch1(cb){
 }
 
 function ch2(cb){
-    adapter.log.debug('ch2 send command');
     if (adapter.config.ch2){
+        adapter.log.debug('ch2 send command');
         _con.write('/ip/firewall/nat/print', (ch) => {
             ch.once('done', (p) => {
                 adapter.log.debug('ch2 done: ' + JSON.stringify(p));
@@ -214,8 +215,8 @@ function ch2(cb){
 }
 
 function ch3(cb){
-    adapter.log.debug('ch3 send command');
     if (adapter.config.ch3){
+        adapter.log.debug('ch3 send command');
         _con.write('/ip/dhcp-server/lease/print', (ch) => {
             ch.once('done', (p) => {
                 adapter.log.debug('ch3 done: ' + JSON.stringify(p));
@@ -232,8 +233,8 @@ function ch3(cb){
 }
 
 function ch4(cb){
-    adapter.log.debug('ch4 send command');
     if (adapter.config.ch4){
+        adapter.log.debug('ch4 send command');
         _con.write('/interface/print', (ch) => {
             ch.once('done', (p) => {
                 adapter.log.debug('ch4 done: ' + JSON.stringify(p));
@@ -250,8 +251,8 @@ function ch4(cb){
 }
 
 function ch5(cb){
-    adapter.log.debug('ch5 send command');
     if (adapter.config.ch5){
+        adapter.log.debug('ch5 send command');
         _con.write('/ip/firewall/filter/print', (ch) => {
             ch.once('done', (p) => {
                 adapter.log.debug('ch5 done: ' + JSON.stringify(p));
@@ -268,8 +269,8 @@ function ch5(cb){
 }
 
 function ch6(cb){
-    adapter.log.debug('ch6 send command');
     if (adapter.config.ch6){
+        adapter.log.debug('ch6 send command');
         if (iswlan){
             _con.write('/interface/wireless/registration-table/print', (ch) => {
                 ch.once('done', (p) => {
@@ -291,8 +292,8 @@ function ch6(cb){
 }
 
 function ch7(cb){
-    adapter.log.debug('ch7 send command');
     if (adapter.config.ch7){
+        adapter.log.debug('ch7 send command');
         _con.write('/ip/address/print', (ch) => {
             ch.once('done', (p) => {
                 adapter.log.debug('ch7 done: ' + JSON.stringify(p));
@@ -309,8 +310,8 @@ function ch7(cb){
 }
 
 function ch8(cb){
-    adapter.log.debug('ch8 send command');
     if (adapter.config.ch8){
+        adapter.log.debug('ch8 send command');
         _con.write('/ip/firewall/address-list/print', (ch) => {
             ch.once('done', (p) => {
                 adapter.log.debug('ch8 done: ' + JSON.stringify(p));
@@ -322,6 +323,21 @@ function ch8(cb){
             /*ch.once('error', function(e, chan) {
              err(e, true);
              });*/
+        });
+    } else cb && cb();
+}
+
+function ch9(cb){
+    if (adapter.config.ch9){
+        adapter.log.debug('ch9 send command');
+        _con.write('/caps-man/registration-table/print', (ch) => {
+            ch.once('done', (p) => {
+                adapter.log.debug('ch9 done: ' + JSON.stringify(p));
+                let d = MikroNode.parseItems(p);
+                ParseCapsMan(d);
+                adapter.log.debug('/caps-man/registration-table/print' + JSON.stringify(d));
+                cb && cb();
+            });
         });
     } else cb && cb();
 }
@@ -338,7 +354,9 @@ function parse(){
                             ch6(() => {
                                 ch7(() => {
                                     ch8(() => {
-                                        SetStates();
+                                        ch9(() => {
+                                            SetStates();
+                                        });
                                     });
                                 });
                             });
@@ -535,6 +553,27 @@ function ParseFirewallList(d, cb){
     cb && cb();
 }
 
+function ParseCapsMan(d, cb){
+    let res = [];
+    d.forEach((item, i) => {
+        if (d[i]["interface"] !== undefined){
+            res.push({
+                "id":  d[i][".id"],
+                "interface":  d[i]["interface"],
+                "ssid":  d[i]["ssid"],
+                "rx-rate":  d[i]["rx-rate"],
+                "rx-signal":  d[i]["rx-signal"],
+                "uptime":  d[i]["uptime"],
+                "bytes":  d[i]["bytes"],
+                "mac":       d[i]["mac-address"],
+                "comment":  d[i]["comment"] ? d[i]["comment"] :''
+            });
+        }
+    });
+    states.capsman = res;
+    cb && cb();
+}
+
 function SetStates(){
     Object.keys(states).forEach((key) => {
         if (states[key].length !== undefined && key !== 'lists'){
@@ -555,6 +594,7 @@ function SetStates(){
                         } else {
                             adapter.log.debug('SetStates obj: ' + JSON.stringify(states[key]));
                             adapter.log.debug('SetStates: ' + JSON.stringify(states[key][i]));
+                            //let id_key = states[key][i]['id'] ? states[key][i]['id'] : 
                             ids = key + '.id' + states[key][i]['id'].replace('*', '_') + '.' + k;
                         }
                         setObject(ids, states[key][i][k]);
