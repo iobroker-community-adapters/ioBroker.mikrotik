@@ -554,7 +554,6 @@ function ParseFirewallList(d, cb){
 }
 
 function ParseCapsMan(d, cb){
-    //d = [{".id":"*1","interface":"2.4GHz--MikroTik","ssid":"XX","mac-address":"XX:XX:XX:XX:XX:XX","tx-rate":"72.2Mbps-20MHz/1S/SGI","rx-rate":"54Mbps","rx-signal":"-67","uptime":"6h26m53s390ms","packets":"164373,129681","bytes":"11980887,26210517","tx-rate-set":"OFDM:6-54 BW:1x SGI:1x HT:0-7","eap-identity":"","comment":"Device-01"},{".id":"*2","interface":"2.4GHz--MikroTik","ssid":"XX","mac-address":"XX:XX:XX:XX:XX:XX","tx-rate":"65Mbps-20MHz/1S/SGI","rx-rate":"18Mbps","rx-signal":"-64","uptime":"6h26m53s250ms","packets":"198880,155137","bytes":"15095260,37271664","tx-rate-set":"OFDM:6-54 BW:1x SGI:1x HT:0-7","eap-identity":"","comment":"Device-02"}];
     let res = [];
     d.forEach((item, i) => {
         if (d[i]["interface"] !== undefined){

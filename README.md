@@ -31,6 +31,9 @@ Reset power USB in mikrotik
 
 ## Changelog
 
+#### 1.0.14
+* (instalator) added CAPsMAN [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/33)
+
 #### 1.0.13
 * (instalator) changed parse RAW command
 * (instalator) added last-link-up-time and last-link-down-time to interface

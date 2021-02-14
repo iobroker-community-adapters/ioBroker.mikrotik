@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "mikrotik",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "news": {
+      "1.0.14": {
+        "en": "added CAPsMAN",
+        "de": "fügte CAPsMAN hinzu",
+        "ru": "добавил CAPsMAN",
+        "pt": "adicionado CAPsMAN",
+        "nl": "CAPsMAN toegevoegd",
+        "fr": "a ajouté CAPsMAN",
+        "it": "ha aggiunto CAPsMAN",
+        "es": "añadido CAPsMAN",
+        "pl": "dodał CAPsMAN",
+        "zh-cn": "添加了CAPsMAN"
+      },
       "1.0.13": {
         "en": "changed parsing RAW command\nadded last-link-up-time and last-link-down-time to interface",
         "de": "geänderter Parsing-RAW-Befehl\nLast-Link-Up-Time und Last-Link-Down-Time zur Schnittstelle hinzugefügt",
@@ -14,7 +26,8 @@
         "es": "se modificó el comando RAW de análisis sintáctico\nse agregó el tiempo de activación del último enlace y el tiempo de desactivación del último enlace a la interfaz",
         "pl": "zmieniono polecenie parsowania RAW\ndodano czas ostatniego łącza do interfejsu i czas wyłączenia ostatniego łącza do interfejsu",
         "zh-cn": "更改了解析RAW命令\n为接口添加了上次链接时间和上次链接时间"
-      },"1.0.12": {
+      },
+      "1.0.12": {
         "en": "fixed error symb",
         "de": "fixed error symb",
         "ru": "fixed error symb",
