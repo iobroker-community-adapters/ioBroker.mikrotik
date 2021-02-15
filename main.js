@@ -68,7 +68,7 @@ function startAdapter(options){
                         val = '/' + val;
                     }
                     if (!~val.indexOf('\u000A')){
-                        if(!val.split(" ").length - 1){
+                        if(!val.split(" ").length - 1 && !val.split("=").length - 1){
                             val = val.replace(/\s/g, '\u000A');
                         } else {
                             val = val.replace(/\s/g, '\u000A=');
