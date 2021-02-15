@@ -57,7 +57,6 @@ function startAdapter(options){
                 if (commands[cmd] !== undefined){
                     if (cmd === 'add_firewall'){
                         cmdlist = val.split(",");
-                        // e.g.  "name,127.0.0.1,comment"
                         SetCommand('/ip/firewall/address-list/add\n=list=' + cmdlist[0] + '\n=address=' + cmdlist[1] + '\n=comment=' + cmdlist[2]);
                     } else {
                         SetCommand(commands[cmd]);
