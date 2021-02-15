@@ -64,14 +64,18 @@ function startAdapter(options){
                     }
                 }
                 if (cmd === 'raw'){
-                    if (!~val.indexOf('\u000A')){
-                        val = val.replace(/\s/g, '\u000A=');
-                    }
                     if (val[0] !== '/'){
                         val = '/' + val;
                     }
-                    cmdlist = val.split(",");
-                    SetCommand(cmdlist);
+                    if (!~val.indexOf('\u000A')){
+                        if(!val.split(" ").length - 1){
+                            val = val.replace(/\s/g, '\u000A');
+                        } else {
+                            val = val.replace(/\s/g, '\u000A=');
+                        }
+                    }
+                    //cmdlist = val.split(",");
+                    SetCommand(val);
                 }
                 if (cmd === 'send_sms'){
                     //system resource usb print
