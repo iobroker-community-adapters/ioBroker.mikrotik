@@ -20,7 +20,9 @@ e.g. `name,127.0.0.1,comment`.
 Send command api to mikrotik  
 e.g.:  
  `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`. OR
- `ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org`
+ `ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org`   
+ `ip/kid-control/pause kid1`   
+ `ip/kid-control/resume`
 ### reboot, shutdown
 Reboot/shutdown mikrotik
 ### usb_reset
