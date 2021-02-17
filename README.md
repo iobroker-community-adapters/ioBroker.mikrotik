@@ -21,8 +21,9 @@ Send api command to mikrotik, the result of execution will be received in the `m
 e.g.:  
  `/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`. OR
  `ip/firewall/address-list/add list=FuckRKN address=195.82.146.0/24 comment=rutracker.org`   
- `ip/kid-control/pause kid1`   
- `ip/kid-control/resume`
+ `ip/kid-control/print`   
+ `ip/kid-control/pause .id=*1`
+ `ip/kid-control/resume .id=*1`
 ### reboot, shutdown
 Reboot/shutdown mikrotik
 ### usb_reset
