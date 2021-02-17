@@ -33,7 +33,7 @@ Reset power USB in mikrotik
 
 ## Changelog
 
-#### 1.0.15
+#### 1.0.16
 * (instalator) changed parse RAW
 
 #### 1.0.14
