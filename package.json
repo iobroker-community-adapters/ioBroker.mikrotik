@@ -12,7 +12,7 @@
       "email": "vvvalt@mail.ru"
     }
   ],
-  "homepage": "https://github.com/iobroker/iobroker.mikrotik",
+  "homepage": "https://github.com/iobroker-community-adapters/iobroker.mikrotik",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -20,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/instalator/ioBroker.mikrotik.git"
+    "url": "https://github.com/iobroker-community-adapters/ioBroker.mikrotik.git"
   },
   "dependencies": {
     "mikronode-ng": "https://github.com/homeinstalator/mikronode-ng/tarball/v1.0.0",
@@ -71,7 +71,7 @@
     "release-major": "release-script major --yes"
   },
   "bugs": {
-    "url": "https://github.com/instalator/iobroker.mikrotik/issues"
+    "url": "https://github.com/iobroker-community-adapters/iobroker.mikrotik/issues"
   },
   "readmeFilename": "README.md"
 }

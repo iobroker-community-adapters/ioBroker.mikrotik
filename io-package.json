@@ -82,12 +82,12 @@
     "icon": "mikrotik.png",
     "enabled": false,
     "materialize": true,
-    "extIcon": "https://raw.githubusercontent.com/instalator/iobroker.mikrotik/master/admin/mikrotik.png",
+    "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/iobroker.mikrotik/master/admin/mikrotik.png",
     "keywords": [
       "ioBroker",
       "mikrotik"
     ],
-    "readme": "https://github.com/instalator/iobroker.mikrotik/blob/master/README.md",
+    "readme": "https://github.com/iobroker-community-adapters/iobroker.mikrotik/blob/master/README.md",
     "loglevel": "info",
     "type": "hardware",
     "connectionType": "local",
