@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "mikrotik",
-    "version": "1.0.16",
+    "version": "1.1.0",
     "news": {
       "1.0.15": {
         "en": "changed parse RAW",
