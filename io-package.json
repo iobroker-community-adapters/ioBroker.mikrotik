@@ -65,6 +65,9 @@
       }
     },
     "title": "MikroTik Router",
+    "titleLang": {
+      "en": "MikroTik Router"
+    },
     "desc": {
       "en": "ioBroker mikrotik Adapter",
       "de": "ioBroker Mikrotik Adapter",

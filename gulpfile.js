@@ -459,10 +459,10 @@ gulp.task('translate', async function (done) {
                         existing[t] = await translate(enTranslations[t], l, yandex);
                     }
                 }
-                if (!fs.existsSync('./admin/i18n/' + l + '/')) {
-                    fs.mkdirSync('./admin/i18n/' + l + '/');
+                if (!fs.existsSync(`./admin/i18n/${l}/`)) {
+                    fs.mkdirSync(`./admin/i18n/${l}/`);
                 }
-                fs.writeFileSync('./admin/i18n/' + l + '/translations.json', JSON.stringify(existing, null, 4));
+                fs.writeFileSync(`./admin/i18n/${l}/translations.json`, JSON.stringify(existing, null, 4));
             }
         }
 
