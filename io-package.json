@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "mikrotik",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "news": {
+      "1.1.1": {
+        "en": "Packages updated",
+        "de": "Pakete aktualisiert",
+        "ru": "Пакеты обновлены",
+        "pt": "Pacotes atualizados",
+        "nl": "Verpakking geüpload",
+        "fr": "Packages updated",
+        "it": "Pacchetti aggiornati",
+        "es": "Paquetes actualizados",
+        "pl": "Pakiet",
+        "uk": "Пакети оновлені",
+        "zh-cn": "更新的包装"
+      },
       "1.0.15": {
         "en": "changed parse RAW",
         "de": "Parse RAW geändert",

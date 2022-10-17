@@ -37,7 +37,7 @@ Reset power USB in mikrotik
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 1.1.1 (2022-10-17)
 * (bluefox) Packages updated
 
 ### 1.0.16
