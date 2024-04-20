@@ -77,21 +77,38 @@
         "nl": "added name objects\nfix error"
       }
     },
-    "title": "MikroTik Router",
     "titleLang": {
-      "en": "MikroTik Router"
-    },
+      "en": "MikroTik Router",
+      "de": "MikroTik Router",
+      "ru": "MikroTik Router",
+      "pt": "MikroTik Router",
+      "nl": "MikroTik Router",
+      "fr": "Routeur MikroTik",
+      "it": "MikroTik Router",
+      "es": "MikroTik Router",
+      "pl": "Ruter MikroTik",
+      "uk": "Маршрутизатор MikroTik",
+      "zh-cn": "MikroTik 路由器"
+      },
     "desc": {
-      "en": "ioBroker mikrotik Adapter",
+      "en": "ioBroker Mikrotik Adapter",
       "de": "ioBroker Mikrotik Adapter",
-      "ru": "ioBroker Mikrotik драйвер",
-      "pt": "Modelo de adaptador para o ioBroker",
-      "fr": "ioBroker adaptateur modèle",
-      "nl": "ioBroker Mikrotik Adapter"
+      "ru": "ioBroker Mikrotik Adapter",
+      "pt": "adaptador ioBroker Mikrotik",
+      "nl": "ioBroker Mikrotik Adapter",
+      "fr": "adaptateur ioBroker Mikrotik",
+      "it": "ioBroker Mikrotik adattatore",
+      "es": "ioBroker Mikrotik Adapter",
+      "pl": "joBroker Mikrotik Adapter",
+      "uk": "ioBroker Mikrotik адаптер",
+      "zh-cn": "ioBroker Mikrotik 适应器"
     },
     "platform": "Javascript/Node.js",
     "mode": "daemon",
-    "license": "MIT",
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
     "icon": "mikrotik.png",
     "enabled": false,
     "materialize": true,
@@ -102,6 +119,7 @@
     ],
     "readme": "https://github.com/iobroker-community-adapters/iobroker.mikrotik/blob/master/README.md",
     "loglevel": "info",
+    "tier": 2,
     "type": "hardware",
     "connectionType": "local",
     "dataSource": "poll",
@@ -109,6 +127,16 @@
       {
         "name": "instalator",
         "email": "vvvalt@mail.ru"
+      }
+    ],
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.19"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.13.16"
       }
     ]
   },
