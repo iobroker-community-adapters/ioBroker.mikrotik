@@ -1,0 +1,22 @@
+{
+    "MikroTik adapter settings": "Configuración del adaptador MikroTik",
+    "ch2": "cortafuegos/nat",
+    "ch3": "servidor dhcp/arrendamiento",
+    "ch4": "interfaz",
+    "ch5": "cortafuegos/filtro",
+    "ch6": "mesa-de-registro/inalámbrica",
+    "ch7": "DIRECCIÓN",
+    "ch8": "firewall/lista de direcciones",
+    "ch9": "caps-man/tabla-de-registro",
+    "def": "predeterminado (8728)",
+    "following": "Reciba los siguientes datos:",
+    "host": "Dirección IP",
+    "login": "acceso",
+    "ms": "milisegundos",
+    "on save adapter restarts with new config immediately": "Al guardar, el adaptador se reinicia con una nueva configuración inmediatamente.",
+    "password": "contraseña",
+    "poll": "Intervalo de actualización de datos",
+    "port": "puerto",
+    "sec": "segundos",
+    "timeout": "se acabó el tiempo"
+}

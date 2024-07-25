@@ -1,0 +1,22 @@
+{
+    "MikroTik adapter settings": "MikroTik-adapterinstellingen",
+    "ch2": "firewall/nat",
+    "ch3": "dhcp-server/lease",
+    "ch4": "koppel",
+    "ch5": "firewall/filter",
+    "ch6": "draadloos/registratietafel",
+    "ch7": "adres",
+    "ch8": "firewall/adreslijst",
+    "ch9": "caps-man/inschrijvingstabel",
+    "def": "standaard (8728)",
+    "following": "Ontvang de volgende gegevens:",
+    "host": "IP adres",
+    "login": "Log in",
+    "ms": "milliseconden",
+    "on save adapter restarts with new config immediately": "bij het opslaan wordt de adapter onmiddellijk opnieuw opgestart met nieuwe configuratie",
+    "password": "wachtwoord",
+    "poll": "Interval voor gegevensvernieuwing",
+    "port": "haven",
+    "sec": "seconden",
+    "timeout": "time-out"
+}

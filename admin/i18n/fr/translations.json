@@ -1,0 +1,22 @@
+{
+    "MikroTik adapter settings": "Paramètres de l'adaptateur MikroTik",
+    "ch2": "pare-feu/nat",
+    "ch3": "serveur DHCP/location",
+    "ch4": "interface",
+    "ch5": "pare-feu/filtre",
+    "ch6": "table d'enregistrement/sans fil",
+    "ch7": "adresse",
+    "ch8": "pare-feu/liste d'adresses",
+    "ch9": "casquettes-homme/table-d'inscription",
+    "def": "par défaut (8728)",
+    "following": "Recevez les données suivantes :",
+    "host": "Adresse IP",
+    "login": "se connecter",
+    "ms": "millisecondes",
+    "on save adapter restarts with new config immediately": "lors de la sauvegarde, l'adaptateur redémarre immédiatement avec une nouvelle configuration",
+    "password": "mot de passe",
+    "poll": "Intervalle d'actualisation des données",
+    "port": "port",
+    "sec": "secondes",
+    "timeout": "temps mort"
+}

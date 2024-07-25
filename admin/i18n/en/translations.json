@@ -1,0 +1,22 @@
+{
+    "MikroTik adapter settings": "MikroTik adapter settings",
+    "ch2": "firewall/nat",
+    "ch3": "dhcp-server/lease",
+    "ch4": "interface",
+    "ch5": "firewall/filter",
+    "ch6": "wireless/registration-table",
+    "ch7": "address",
+    "ch8": "firewall/address-list",
+    "ch9": "caps-man/registration-table",
+    "def": "default (8728)",
+    "following": "Receive the following data:",
+    "host": "IP Address",
+    "login": "login",
+    "ms": "milliseconds",
+    "on save adapter restarts with new config immediately": "on save adapter restarts with new config immediately",
+    "password": "password",
+    "poll": "Data refresh interval",
+    "port": "port",
+    "sec": "seconds",
+    "timeout": "timeout"
+}

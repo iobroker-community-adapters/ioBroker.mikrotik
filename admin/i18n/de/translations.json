@@ -1,0 +1,22 @@
+{
+    "MikroTik adapter settings": "MikroTik-Adaptereinstellungen",
+    "ch2": "Firewall/nat",
+    "ch3": "DHCP-Server/Lease",
+    "ch4": "Schnittstelle",
+    "ch5": "Firewall/Filter",
+    "ch6": "WLAN/Anmeldetabelle",
+    "ch7": "Adresse",
+    "ch8": "Firewall/Adressliste",
+    "ch9": "caps-man/registration-table",
+    "def": "Standard (8728)",
+    "following": "Erhalten Sie folgende Daten:",
+    "host": "IP Adresse",
+    "login": "Anmeldung",
+    "ms": "Millisekunden",
+    "on save adapter restarts with new config immediately": "Beim Speichern wird der Adapter sofort mit der neuen Konfiguration neu gestartet",
+    "password": "Passwort",
+    "poll": "Datenaktualisierungsintervall",
+    "port": "Hafen",
+    "sec": "Sekunden",
+    "timeout": "Auszeit"
+}

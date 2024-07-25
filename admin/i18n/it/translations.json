@@ -1,0 +1,22 @@
+{
+    "MikroTik adapter settings": "Impostazioni dell'adattatore MikroTik",
+    "ch2": "firewall/nat",
+    "ch3": "server DHCP/leasing",
+    "ch4": "interfaccia",
+    "ch5": "firewall/filtro",
+    "ch6": "wireless/tabella di registrazione",
+    "ch7": "indirizzo",
+    "ch8": "firewall/elenco indirizzi",
+    "ch9": "caps-man/tabella-registrazione",
+    "def": "predefinito (8728)",
+    "following": "Ricevi i seguenti dati:",
+    "host": "Indirizzo IP",
+    "login": "login",
+    "ms": "millisecondi",
+    "on save adapter restarts with new config immediately": "al salvataggio l'adattatore si riavvia immediatamente con la nuova configurazione",
+    "password": "parola d'ordine",
+    "poll": "Intervallo di aggiornamento dei dati",
+    "port": "porta",
+    "sec": "secondi",
+    "timeout": "tempo scaduto"
+}

@@ -39,7 +39,8 @@
         "it": "modificato parse RAW",
         "es": "cambio de análisis RAW",
         "pl": "zmieniono parsowanie RAW",
-        "zh-cn": "更改解析RAW"
+        "zh-cn": "更改解析RAW",
+        "uk": "змінено розбір RAW"
       },
       "1.0.14": {
         "en": "added CAPsMAN",
@@ -51,7 +52,8 @@
         "it": "ha aggiunto CAPsMAN",
         "es": "añadido CAPsMAN",
         "pl": "dodał CAPsMAN",
-        "zh-cn": "添加了CAPsMAN"
+        "zh-cn": "添加了CAPsMAN",
+        "uk": "додав CAPsMAN"
       },
       "1.0.13": {
         "en": "changed parsing RAW command\nadded last-link-up-time and last-link-down-time to interface",
@@ -63,7 +65,8 @@
         "it": "modificato il comando RAW di analisi\naggiunto il tempo di attività dell'ultimo collegamento e il tempo di inattività dell'ultimo collegamento all'interfaccia",
         "es": "se modificó el comando RAW de análisis sintáctico\nse agregó el tiempo de activación del último enlace y el tiempo de desactivación del último enlace a la interfaz",
         "pl": "zmieniono polecenie parsowania RAW\ndodano czas ostatniego łącza do interfejsu i czas wyłączenia ostatniego łącza do interfejsu",
-        "zh-cn": "更改了解析RAW命令\n为接口添加了上次链接时间和上次链接时间"
+        "zh-cn": "更改了解析RAW命令\n为接口添加了上次链接时间和上次链接时间",
+        "uk": "змінена команда аналізу RAW\nдодано час останнього підключення та час останнього відключення зв’язку до інтерфейсу"
       },
       "1.0.12": {
         "en": "fixed error symb",
@@ -71,7 +74,12 @@
         "ru": "fixed error symb",
         "pt": "fixed error symb",
         "fr": "fixed error symb",
-        "nl": "fixed error symb"
+        "nl": "fixed error symb",
+        "it": "simbolo di errore corretto",
+        "es": "símbolo de error arreglado",
+        "pl": "naprawiono symbol błędu",
+        "uk": "виправлена ​​помилка симв",
+        "zh-cn": "固定错误符号"
       },
       "1.0.11": {
         "en": "TypeError: Cannot read property 'replace' of undefined",
@@ -79,7 +87,12 @@
         "ru": "TypeError: Cannot read property 'replace' of undefined",
         "pt": "TypeError: Cannot read property 'replace' of undefined",
         "fr": "TypeError: Cannot read property 'replace' of undefined",
-        "nl": "TypeError: Cannot read property 'replace' of undefined"
+        "nl": "TypeError: Cannot read property 'replace' of undefined",
+        "it": "TypeError: impossibile leggere la proprietà 'sostituisci' di unfine",
+        "es": "TypeError: no se puede leer la propiedad 'reemplazar' de indefinido",
+        "pl": "TypeError: Nie można odczytać właściwości „replace” niezdefiniowanej",
+        "uk": "TypeError: неможливо прочитати властивість 'replace' невизначеного",
+        "zh-cn": "类型错误：无法读取未定义的属性“替换”"
       }
     },
     "titleLang": {

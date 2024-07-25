@@ -1,0 +1,22 @@
+{
+    "MikroTik adapter settings": "MikroTik 适配器设置",
+    "ch2": "防火墙/NAT",
+    "ch3": "dhcp 服务器/租用",
+    "ch4": "界面",
+    "ch5": "防火墙/过滤器",
+    "ch6": "无线/注册表",
+    "ch7": "地址",
+    "ch8": "防火墙/地址列表",
+    "ch9": "帽人/登记表",
+    "def": "默认（8728）",
+    "following": "接收以下数据：",
+    "host": "IP地址",
+    "login": "登录",
+    "ms": "毫秒",
+    "on save adapter restarts with new config immediately": "保存适配器后立即使用新配置重新启动",
+    "password": "密码",
+    "poll": "数据刷新间隔",
+    "port": "港口",
+    "sec": "秒",
+    "timeout": "暂停"
+}

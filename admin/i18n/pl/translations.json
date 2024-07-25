@@ -1,0 +1,22 @@
+{
+    "MikroTik adapter settings": "Ustawienia adaptera MikroTik",
+    "ch2": "zapora sieciowa/nat",
+    "ch3": "serwer DHCP/dzierżawa",
+    "ch4": "interfejs",
+    "ch5": "zapora/filtr",
+    "ch6": "tabela bezprzewodowa/rejestracyjna",
+    "ch7": "adres",
+    "ch8": "zapora ogniowa/lista adresów",
+    "ch9": "caps-man/tabela-rejestracyjna",
+    "def": "domyślny (8728)",
+    "following": "Otrzymaj następujące dane:",
+    "host": "Adres IP",
+    "login": "Zaloguj sie",
+    "ms": "milisekundy",
+    "on save adapter restarts with new config immediately": "po zapisaniu adapter natychmiast uruchamia się ponownie z nową konfiguracją",
+    "password": "hasło",
+    "poll": "Interwał odświeżania danych",
+    "port": "Port",
+    "sec": "sekundy",
+    "timeout": "koniec czasu"
+}
