@@ -116,10 +116,8 @@
     },
     "icon": "mikrotik.png",
     "enabled": false,
-    "materialize": true,
     "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/iobroker.mikrotik/master/admin/mikrotik.png",
     "keywords": [
-      "ioBroker",
       "mikrotik"
     ],
     "readme": "https://github.com/iobroker-community-adapters/iobroker.mikrotik/blob/master/README.md",
@@ -128,6 +126,9 @@
     "type": "hardware",
     "connectionType": "local",
     "dataSource": "poll",
+    "adminUI": {
+      "config": "materialize"
+    },
     "authors": [
       {
         "name": "instalator",
