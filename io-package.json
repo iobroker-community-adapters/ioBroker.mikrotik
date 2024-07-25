@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "mikrotik",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "news": {
+      "1.2.1": {
+        "en": "Default value for commands.add_firewall has been corrected [#138]\nSome issues reported by adapter-checker have been fixed\nTesting for node.js 22 has been added\nDependencies have been updated",
+        "de": "Standardwert für commands.add_firewall wurde korrigiert [#138]\nEinige von Adapter-Checker gemeldete Probleme wurden behoben\nTests für node.js 22 wurden hinzugefügt\nAbhängigkeiten wurden aktualisiert",
+        "ru": "Значение по умолчанию для commands.add_firewall было исправлено [#138]\nНекоторые проблемы, о которых сообщил адаптер-контроль, были исправлены\nДобавлено тестирование на node.js 22\nЗависимость обновлена",
+        "pt": "Valor padrão para commands.add_firewall foi corrigido [#138]\nAlguns problemas relatados pelo verificador do adaptador foram corrigidos\nTestar para node.js 22 foi adicionado\nAs dependências foram atualizadas",
+        "nl": "Standaardwaarde voor commando's.add_firewall is gecorrigeerd [#138]\nSommige problemen gemeld door adapter-checker zijn opgelost\nTest op node.js 22 is toegevoegd\nAfhankelijkheden zijn bijgewerkt",
+        "fr": "La valeur par défaut pour commandes.add_firewall a été corrigée [#138]\nCertains problèmes signalés par l'adaptateur-vérificateur ont été corrigés\nTests pour node.js 22 a été ajouté\nLes dépendances ont été actualisées",
+        "it": "Valore predefinito per commands.add_firewall è stato corretto [#138]\nAlcuni problemi segnalati da adattatore-checker sono stati risolti\nTest per node.js 22 è stato aggiunto\nLe dipendenze sono state aggiornate",
+        "es": "Valor predeterminado para comandos.add_firewall ha sido corregido [#138]\nSe han resuelto algunas cuestiones comunicadas por el control de adaptador\nSe han añadido pruebas para node.js 22\nSe han actualizado las dependencias",
+        "pl": "Wartość domyślna dla commands.add _ firewall została poprawiona [# 138]\nNiektóre problemy zgłoszone przez sprawdzacz adaptera zostały ustalone\nDodano badanie na node.js 22\nZaktualizowano zależności",
+        "uk": "За замовчуванням значення для команд.add_firewall було виправлено [#138]\nДеякі питання, які повідомляються адаптером, були виправлені\nТестування для node.js 22 було додано\nЗалежність було оновлено",
+        "zh-cn": "命令的默认值. add_ firewall 已被更正 [# 138]\n适配器检查器报告的一些问题已经解决\n增加了节点22测试\n依赖关系已更新"
+      },
       "1.2.0": {
         "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nDependencies have been updated",
         "de": "Adapter benötigt node.js >= 18 und js-controller >= 5 jetzt\nAbhängigkeiten wurden aktualisiert",
@@ -80,19 +93,6 @@
         "pl": "naprawiono symbol błędu",
         "uk": "виправлена ​​помилка симв",
         "zh-cn": "固定错误符号"
-      },
-      "1.0.11": {
-        "en": "TypeError: Cannot read property 'replace' of undefined",
-        "de": "TypeError: Cannot read property 'replace' of undefined",
-        "ru": "TypeError: Cannot read property 'replace' of undefined",
-        "pt": "TypeError: Cannot read property 'replace' of undefined",
-        "fr": "TypeError: Cannot read property 'replace' of undefined",
-        "nl": "TypeError: Cannot read property 'replace' of undefined",
-        "it": "TypeError: impossibile leggere la proprietà 'sostituisci' di unfine",
-        "es": "TypeError: no se puede leer la propiedad 'reemplazar' de indefinido",
-        "pl": "TypeError: Nie można odczytać właściwości „replace” niezdefiniowanej",
-        "uk": "TypeError: неможливо прочитати властивість 'replace' невизначеного",
-        "zh-cn": "类型错误：无法读取未定义的属性“替换”"
       }
     },
     "titleLang": {
