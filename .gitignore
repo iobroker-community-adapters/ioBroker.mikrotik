@@ -66,3 +66,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+#ignore .commitinfo created by ioBroker release script
+.commitinfo
