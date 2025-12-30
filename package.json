@@ -2,15 +2,10 @@
   "name": "iobroker.mikrotik",
   "version": "1.2.1",
   "description": "MikroTik Router Adapter",
-  "author": {
-    "name": "instalator",
-    "email": "vvvalt@mail.ru"
-  },
+  "author": "instalator <vvvalt@mail.ru>",
   "contributors": [
-    {
-      "name": "instalator",
-      "email": "vvvalt@mail.ru"
-    }
+    "instalator <vvvalt@mail.ru>",
+    "iobroker-community-adapters <iobroker-community-adapters@gmx.de>"
   ],
   "homepage": "https://github.com/iobroker-community-adapters/iobroker.mikrotik",
   "license": "MIT",
