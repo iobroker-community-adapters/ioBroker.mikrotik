@@ -132,6 +132,8 @@ Reset power USB in mikrotik
 ### 0.0.1
 * (instalator) initial version
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 
 The MIT License (MIT)
