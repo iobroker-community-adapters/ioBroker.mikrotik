@@ -1,0 +1,148 @@
+{
+    "type": "panel",
+    "items": {
+        "host": {
+            "type": "text",
+            "label": "host",
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "port": {
+            "type": "number",
+            "label": "port",
+            "help": "def",
+            "min": 1,
+            "max": 65535,
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "timeout": {
+            "type": "number",
+            "label": "timeout",
+            "help": "sec",
+            "min": 0,
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "poll": {
+            "type": "number",
+            "label": "poll",
+            "help": "ms",
+            "min": 0,
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "login": {
+            "type": "text",
+            "label": "login",
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "password": {
+            "type": "password",
+            "label": "password",
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "_header_data": {
+            "type": "staticText",
+            "text": "following",
+            "newLine": true,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12
+        },
+        "ch2": {
+            "type": "checkbox",
+            "label": "ch2",
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "ch3": {
+            "type": "checkbox",
+            "label": "ch3",
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "ch4": {
+            "type": "checkbox",
+            "label": "ch4",
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "ch5": {
+            "type": "checkbox",
+            "label": "ch5",
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "ch6": {
+            "type": "checkbox",
+            "label": "ch6",
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "ch7": {
+            "type": "checkbox",
+            "label": "ch7",
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "ch8": {
+            "type": "checkbox",
+            "label": "ch8",
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        },
+        "ch9": {
+            "type": "checkbox",
+            "label": "ch9",
+            "xs": 12,
+            "sm": 6,
+            "md": 4,
+            "lg": 4,
+            "xl": 3
+        }
+    }
+}
