@@ -16,7 +16,7 @@
     "on save adapter restarts with new config immediately": "Beim Speichern wird der Adapter sofort mit der neuen Konfiguration neu gestartet",
     "password": "Passwort",
     "poll": "Datenaktualisierungsintervall",
-    "port": "Hafen",
+    "port": "Port",
     "sec": "Sekunden",
     "timeout": "Auszeit"
 }
