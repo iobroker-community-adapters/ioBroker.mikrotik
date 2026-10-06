@@ -13,7 +13,7 @@
     "host": "IP Adresse",
     "login": "Anmeldung",
     "ms": "Millisekunden",
-    "on save adapter restarts with new config immediately": "Beim Speichern wird der Adapter sofort mit der neuen Konfiguration neu gestartet",
+    "on save adapter restarts with new config immediately": "Beim Speichern wird der Adapter sofort mit der neuen Konfiguration neu gestartet.",
     "password": "Passwort",
     "poll": "Datenaktualisierungsintervall",
     "port": "Port",
